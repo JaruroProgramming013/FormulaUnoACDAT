@@ -56,4 +56,31 @@ CREATE TABLE Apuestas (
 )
 
 
+--1. Funcion de asignacion de la cuota
+GO
+
+CREATE or ALTER FUNCTION dbo.AsignarCuota (@CodigoCarrera SMALLINT, @CodigoPiloto1 TINYINT, @CodigoPiloto2 TINYINT, @CodigoPiloto3 TINYINT) RETURNS DECIMAL (4,2) 
+AS 
+
+--BEGIN 
+--DECLARE @CUOTA DECIMAL(4,2)
+--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
+--RETURN @CUOTA
+--END
+
+BEGIN
+DECLARE @CUOTA DECIMAL(4,2)
+SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
+RETURN @CUOTA
+END
+
+GO
+
+CREATE VIEW F1_ValorRandom
+AS
+SELECT RAND() AS Valor
+
+
+
+
 
