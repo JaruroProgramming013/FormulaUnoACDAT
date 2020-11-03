@@ -1,3 +1,8 @@
+CREATE DATABASE ApuestasF1
+GO
+USE ApuestasF1
+GO
+
 CREATE TABLE Usuarios (
     ID SMALLINT NOT NULL CONSTRAINT PK_Usuarios PRIMARY KEY
     ,Nombre VARCHAR(30) NOT NULL
@@ -19,19 +24,63 @@ CREATE TABLE Pilotos(
     ,Nombre VARCHAR(20) NOT NULL
     ,Apellido VARCHAR(20) NOT NULL
     ,Siglas CHAR(3) NOT NULL
-    ,Escudería CHAR(3) NOT NULL
+    ,Escuder�a CHAR(3) NOT NULL
 )
 
 CREATE TABLE Carreras (
-    Código SMALLINT NOT NULL CONSTRAINT PK_Carreras PRIMARY KEY
+    C�digo SMALLINT NOT NULL CONSTRAINT PK_Carreras PRIMARY KEY 
+	,Circuito VARCHAR(20) NOT NULL
+	,[Fecha y Hora Fin] DATETIME NOT NULL
+	,[N� vueltas] TINYINT NOT NULL
+)
+
+CREATE TABLE PilotoCarreras(
+	 [Numero Piloto] TINYINT NOT NULL CONSTRAINT FK_C�digoPiloto FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE CASCADE ON UPDATE CASCADE
+	,[C�digo Carrera] SMALLINT NOT NULL CONSTRAINT FK_C�digoCarrera FOREIGN KEY REFERENCES Carreras(C�digo) ON DELETE CASCADE ON UPDATE CASCADE
+	,PRIMARY KEY ([Numero Piloto], [C�digo Carrera])
+	,Posici�n TINYINT NULL
+	,[Vuelta r�pida] TIME NULL
 )
 
 CREATE TABLE Apuestas (
-	[ID Apuesta] smallint NOT NULL CONSTRAINT PK_Apuestas PRIMARY KEY
-	,[ID Usuario] smallint NOT NULL CONSTRAINT FK_ApuestasUsuarios FOREIGN KEY REFERENCES Usuarios(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
-	,[Código Carrera] smallint NOT NULL CONSTRAINT FK_ApuestasCarreras FOREIGN KEY REFERENCES Carreras(Código) ON DELETE NO ACTION ON UPDATE NO ACTION
-	,Tipo nvarchar(30) NOT NULL
-	,Momento smalldatetime NOT NULL
-	,Importe smallmoney NOT NULL
-	,Cuota decimal(6,2) NOT NULL
+	[ID Apuesta] SMALLINT NOT NULL CONSTRAINT PK_Apuestas PRIMARY KEY
+	,[ID Usuario] SMALLINT NOT NULL CONSTRAINT FK_ApuestasUsuarios FOREIGN KEY REFERENCES Usuarios(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,[C�digo Carrera] SMALLINT NOT NULL CONSTRAINT FK_ApuestasCarreras FOREIGN KEY REFERENCES Carreras(C�digo) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,[C�digo Piloto1] TINYINT NOT NULL CONSTRAINT FK_ApuestasPilotos1 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,[C�digo Piloto2] TINYINT NULL CONSTRAINT FK_ApuestasPilotos2 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,[C�digo Piloto3] TINYINT NULL CONSTRAINT FK_ApuestasPilotos3 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,Tipo TINYINT  NOT NULL CONSTRAINT CK_Tipo CHECK (Tipo BETWEEN 1 AND 3)
+	,Momento SMALLDATETIME NOT NULL
+	,Importe SMALLMONEY NOT NULL
+	,Cuota DECIMAL(4,2) NOT NULL
 )
+
+
+--1. Funcion de asignacion de la cuota
+GO
+
+CREATE or ALTER FUNCTION dbo.AsignarCuota (@CodigoCarrera SMALLINT, @CodigoPiloto1 TINYINT, @CodigoPiloto2 TINYINT, @CodigoPiloto3 TINYINT) RETURNS DECIMAL (4,2) 
+AS 
+
+--BEGIN 
+--DECLARE @CUOTA DECIMAL(4,2)
+--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
+--RETURN @CUOTA
+--END
+
+BEGIN
+DECLARE @CUOTA DECIMAL(4,2)
+SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
+RETURN @CUOTA
+END
+
+GO
+
+CREATE VIEW F1_ValorRandom
+AS
+SELECT RAND() AS Valor
+
+
+
+
+
