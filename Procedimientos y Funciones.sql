@@ -20,7 +20,7 @@ END
 
 GO
 
---Nombre: InscribirPiloto
+--Nombre: InsertarPiloto
 --Descripción: Inscribe un piloto en nuestra BBDD
 --Entrada: Numero, Nombre, Apellido, Siglas y Escuuderia
 --Salida: Un nuevo piloto
@@ -50,7 +50,7 @@ CREATE OR ALTER PROCEDURE AñadirCarrera
 	@Vueltas TINYINT
 AS BEGIN
 	BEGIN TRANSACTION
-		INSERT INTO Carreras VALUES (@Circuito, @FechaHoraFin, @Vueltas)
+		INSERT INTO Carreras (Circuito, [Fecha y Hora Fin],[Nº vueltas]) VALUES (@Circuito, @FechaHoraFin, @Vueltas)
 	COMMIT
 END
 

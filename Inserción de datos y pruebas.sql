@@ -21,6 +21,8 @@ EXECUTE InscribirUsuario 'Companhero11', 'compañero11@gmail.com', 'compa11'
 
 --select * from Usuarios
 
+GO
+
 EXECUTE InscribirPiloto 2, 'Peter', 'Perez', 'PER', 'Ferrari'
 EXECUTE InscribirPiloto 5, 'Thomas', 'Jones', 'JON', 'McLaren'
 EXECUTE InscribirPiloto 8, 'Robert', 'Kubica', 'KUB', 'McLaren'
@@ -37,6 +39,25 @@ EXECUTE InscribirPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
 EXECUTE InscribirPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
 EXECUTE InscribirPiloto 5, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
 
-EXECUTE AñadirCarrera Suzuka, 
+GO
+
+DECLARE @Datetime DATETIME
+
+SET @Datetime = DATETIMEFROMPARTS(2020, 12, 23, 14, 0, 0, 0)
+EXECUTE AñadirCarrera 'Suzuka', @Datetime, 63
+SET @Datetime = DATETIMEFROMPARTS(2021, 1, 18, 15, 0, 0, 0)
+EXECUTE AñadirCarrera 'Imola', @Datetime, 72
+SET @Datetime = DATETIMEFROMPARTS(2021, 2, 14, 14, 0, 0, 0)
+EXECUTE AñadirCarrera 'Montreal', @Datetime, 58
+SET @Datetime = DATETIMEFROMPARTS(2021, 3, 28, 13, 0, 0, 0)
+EXECUTE AñadirCarrera 'Monza', @Datetime, 83
+SET @Datetime = DATETIMEFROMPARTS(2021, 5, 2, 20, 30, 0, 0)
+EXECUTE AñadirCarrera 'AbuDabi', @Datetime, 73
+SET @Datetime = DATETIMEFROMPARTS(2021, 6, 30, 15, 30, 0, 0)
+EXECUTE AñadirCarrera 'Monaco', @Datetime, 61
+SET @Datetime = DATETIMEFROMPARTS(2021, 8, 24, 18, 0, 0, 0)
+EXECUTE AñadirCarrera 'SaoPaulo', @Datetime, 58
+SET @Datetime = DATETIMEFROMPARTS(2021, 9, 29, 7, 0, 0, 0)
+EXECUTE AñadirCarrera 'Indianapolis', @Datetime, 69
 
 select * from PilotoCarreras
