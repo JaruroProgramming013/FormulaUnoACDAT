@@ -8,7 +8,7 @@ GO
 --Entrada: Nombre, email y contraseña
 --Salida: Un nuevo usuario
 
-CREATE OR ALTER PROCEDURE InscribirUsuario 
+CREATE OR ALTER PROCEDURE InscribirUsuario
 	@Nombre VARCHAR(30),
 	@email VARCHAR(50),
 	@Contraseña VARCHAR(30)
@@ -82,24 +82,24 @@ GO
 --Salida: Un valor del tipo DECIMAL(4,2) que indica lo segura o arriesgada que es la apuesta y por lo tanto su beneficio en caso de ser acertada
 
 --Vista auxiliar para obtener un valor Random
-CREATE OR ALTER VIEW F1_ValorRandom 
-AS 
-SELECT RAND() AS Valor 
+CREATE OR ALTER VIEW F1_ValorRandom
+AS
+SELECT RAND() AS Valor
 GO
 
 CREATE OR ALTER FUNCTION AsignarCuota (
-	@CodigoCarrera SMALLINT, 
-	@CodigoPiloto1 TINYINT, 
+	@CodigoCarrera SMALLINT,
+	@CodigoPiloto1 TINYINT,
 	@CodigoPiloto2 TINYINT,
 	@CodigoPiloto3 TINYINT,
 	@TipoApuesta TINYINT,
-	@Momento SMALLDATETIME) 
+	@Momento SMALLDATETIME)
 RETURNS DECIMAL(4,2) AS
 BEGIN
 	DECLARE @Cuota DECIMAL (4,2)
 
-	--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista  
-	SET @CUOTA = (SELECT Valor FROM F1_ValorRandom) 
+	--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
+	SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
 
 	RETURN @Cuota
 END
@@ -126,7 +126,7 @@ AS BEGIN
 			WHERE @Usuario=ID
 		SET @Saldo = @Saldo + @Importe
 
-		UPDATE Usuarios 
+		UPDATE Usuarios
 		SET Saldo=@Saldo
 		WHERE @Usuario=ID
 
@@ -140,33 +140,33 @@ GO
 --Nombre: GrabarApuestas
 --Descripción: Graba una apuesta en la base de datos
 --Entradas: tipo de apuesta, piloto/pilotos por los que se apuesta, circuito, importe
---Salida: Inserción de datos en la tabla apuestas y 
+--Salida: Inserción de datos en la tabla apuestas y
 --			reducción de saldo correspondiente en la tabla jugadores.
 
-CREATE OR ALTER PROCEDURE GrabarApuestas 
+CREATE OR ALTER PROCEDURE GrabarApuestas
 	@IdUsuario SMALLINT,
 	@IdCarrera SMALLINT,
 	@TipoApuesta TINYINT,
 	@Piloto1 TINYINT,
-	@Piloto2 TINYINT NULL,
-	@Piloto3 TINYINT NULL,
+	@Piloto2 TINYINT = NULL,
+	@Piloto3 TINYINT = NULL,
 	@Importe SMALLMONEY
-AS BEGIN	
+AS BEGIN
 	BEGIN TRANSACTION
 		DECLARE @Momento SMALLDATETIME
-	
+
 		SET @Momento = CURRENT_TIMESTAMP
 
-		INSERT INTO Apuestas VALUES (	@IdUsuario, 
-										@IdCarrera, 
-										@Piloto1, @Piloto2, @Piloto3, 
-										@TipoApuesta, 
-										@Momento, 
-										@Importe, 
-										dbo.AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
+		INSERT INTO Apuestas VALUES (	@IdUsuario,
+										@IdCarrera,
+										@Piloto1, @Piloto2, @Piloto3,
+										@TipoApuesta,
+										@Momento,
+										@Importe,
+										AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
 
 		SET @Importe=-@Importe --La función ModificarSaldo suma el importe al saldo, cuando se graba una apuesta queremos disminuir
-		
+
 		EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Deducción por apuesta realizada'
 
 	COMMIT
