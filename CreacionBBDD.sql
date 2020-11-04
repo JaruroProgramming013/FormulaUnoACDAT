@@ -33,7 +33,8 @@ CREATE TABLE Pilotos(
 CREATE TABLE Carreras (
     Codigo SMALLINT IDENTITY (1,1) NOT NULL CONSTRAINT PK_Carreras PRIMARY KEY 
 	,Circuito VARCHAR(20) NOT NULL
-	,[Fecha y Hora Fin] DATETIME NOT NULL
+	,[Fecha y Hora Inicio] DATETIME NOT NULL
+	,[Fecha y Hora Fin] DATETIME
 	,[Num vueltas] TINYINT NOT NULL
 )
 
@@ -52,8 +53,8 @@ CREATE TABLE Apuestas (
 	,[Codigo Piloto1] TINYINT NOT NULL CONSTRAINT FK_ApuestasPilotos1 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
 	,[Codigo Piloto2] TINYINT NULL CONSTRAINT FK_ApuestasPilotos2 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
 	,[Codigo Piloto3] TINYINT NULL CONSTRAINT FK_ApuestasPilotos3 FOREIGN KEY REFERENCES Pilotos(Numero) ON DELETE NO ACTION ON UPDATE NO ACTION
-	,Tipo TINYINT  NOT NULL CONSTRAINT CK_Tipo CHECK (Tipo BETWEEN 1 AND 3) --	-1. Posici�n de un piloto 
-																			--	-2. Piloto que hace la vuelta r�pida
+	,Tipo TINYINT  NOT NULL CONSTRAINT CK_Tipo CHECK (Tipo BETWEEN 1 AND 3) --	-1. Posicion de un piloto 
+																			--	-2. Piloto que hace la vuelta rapida
 																			--	-3. Podium (primeros tres pilotos sin orden)
 
 	,Momento SMALLDATETIME NOT NULL
