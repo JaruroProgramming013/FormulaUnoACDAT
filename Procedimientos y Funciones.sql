@@ -25,7 +25,7 @@ GO
 --Entrada: Numero, Nombre, Apellido, Siglas y Escuuderia
 --Salida: Un nuevo piloto
 
-CREATE OR ALTER PROCEDURE InscribirPiloto
+CREATE OR ALTER PROCEDURE InsertarPiloto
 	@Numero TINYINT,
 	@Nombre VARCHAR(30),
 	@Apellido VARCHAR(50),
@@ -144,7 +144,7 @@ GO
 --			reducción de saldo correspondiente en la tabla jugadores.
 
 CREATE OR ALTER PROCEDURE GrabarApuestas
-	@IdUsuario SMALLINT,
+@IdUsuario SMALLINT,
 	@IdCarrera SMALLINT,
 	@TipoApuesta TINYINT,
 	@Piloto1 TINYINT,
@@ -163,7 +163,7 @@ AS BEGIN
 										@TipoApuesta,
 										@Momento,
 										@Importe,
-										AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
+										dbo.AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
 
 		SET @Importe=-@Importe --La función ModificarSaldo suma el importe al saldo, cuando se graba una apuesta queremos disminuir
 
@@ -172,3 +172,18 @@ AS BEGIN
 	COMMIT
 END
 GO
+CREATE OR ALTER PROCEDURE InsertarPilotoCarrera
+    @IDPiloto TINYINT,
+    @CodigoCarrera TINYINT
+AS BEGIN
+    BEGIN TRAN
+        INSERT INTO PilotoCarreras ([Numero Piloto], [Codigo Carrera]) VALUES (@IDPiloto, @CodigoCarrera)
+    COMMIT
+END
+GO
+CREATE OR ALTER FUNCTION calcularPremio(
+    @DineroApostado SMALLMONEY,
+    @Cuota DECIMAL(4,2)
+) RETURNS SMALLMONEY AS BEGIN
+    RETURN @DineroApostado*@Cuota
+end
