@@ -1,5 +1,5 @@
 --INSERCIÓN DE DATOS
-
+USE ApuestasF1
 --Usuarios:
 GO
 EXECUTE InscribirUsuario 'José', 'joselito@gmail.com', 'joselerelere'
@@ -23,21 +23,21 @@ EXECUTE InscribirUsuario 'Companhero11', 'compañero11@gmail.com', 'compa11'
 
 GO
 
-EXECUTE InscribirPiloto 2, 'Peter', 'Perez', 'PER', 'Ferrari'
-EXECUTE InscribirPiloto 5, 'Thomas', 'Jones', 'JON', 'McLaren'
-EXECUTE InscribirPiloto 8, 'Robert', 'Kubica', 'KUB', 'McLaren'
-EXECUTE InscribirPiloto 14, 'Fernando', 'Alonso', 'ALO', 'Renault'
-EXECUTE InscribirPiloto 76, 'Christian', 'Verstapen', 'VER', 'Ferrari'
-EXECUTE InscribirPiloto 12, 'Felipe', 'Massa', 'MAS', 'Renault'
-EXECUTE InscribirPiloto 43, 'Lewis', 'Hamilton', 'HAM', 'Mercedes'
-EXECUTE InscribirPiloto 1, 'Sebastian', 'Vetel', 'VET', 'Force India'
-EXECUTE InscribirPiloto 38, 'Carlos', 'Sainz', 'SAI', 'Virgin'
-EXECUTE InscribirPiloto 21, 'Peter', 'Perez', 'PET', 'Ferrari'
-EXECUTE InscribirPiloto 77, 'Bernard', 'Bauer', 'BAU', 'Brawn'
-EXECUTE InscribirPiloto 48, 'Valteri', 'Botas', 'BOT', 'Red Bull'
-EXECUTE InscribirPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
-EXECUTE InscribirPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
-EXECUTE InscribirPiloto 5, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
+EXECUTE InsertarPiloto 2, 'Peter', 'Perez', 'PER', 'Ferrari'
+EXECUTE InsertarPiloto 5, 'Thomas', 'Jones', 'JON', 'McLaren'
+EXECUTE InsertarPiloto 8, 'Robert', 'Kubica', 'KUB', 'McLaren'
+EXECUTE InsertarPiloto 14, 'Fernando', 'Alonso', 'ALO', 'Renault'
+EXECUTE InsertarPiloto 76, 'Christian', 'Verstapen', 'VER', 'Ferrari'
+EXECUTE InsertarPiloto 12, 'Felipe', 'Massa', 'MAS', 'Renault'
+EXECUTE InsertarPiloto 43, 'Lewis', 'Hamilton', 'HAM', 'Mercedes'
+EXECUTE InsertarPiloto 1, 'Sebastian', 'Vetel', 'VET', 'Force India'
+EXECUTE InsertarPiloto 38, 'Carlos', 'Sainz', 'SAI', 'Virgin'
+EXECUTE InsertarPiloto 21, 'Peter', 'Perez', 'PET', 'Ferrari'
+EXECUTE InsertarPiloto 77, 'Bernard', 'Bauer', 'BAU', 'Brawn'
+EXECUTE InsertarPiloto 48, 'Valteri', 'Botas', 'BOT', 'Red Bull'
+EXECUTE InsertarPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
+EXECUTE InsertarPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
+EXECUTE InsertarPiloto 55, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
 
 GO
 

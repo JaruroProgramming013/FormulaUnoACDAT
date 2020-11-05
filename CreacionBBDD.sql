@@ -34,7 +34,7 @@ CREATE TABLE Carreras (
     Codigo SMALLINT IDENTITY (1,1) NOT NULL CONSTRAINT PK_Carreras PRIMARY KEY 
 	,Circuito VARCHAR(20) NOT NULL
 	,[Fecha y Hora Inicio] DATETIME NOT NULL
-	,[Fecha y Hora Fin] DATETIME
+	,[Fecha y Hora Fin] DATETIME NULL
 	,[Num vueltas] TINYINT NOT NULL
 )
 

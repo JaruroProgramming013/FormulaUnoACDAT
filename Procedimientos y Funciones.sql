@@ -50,7 +50,7 @@ CREATE OR ALTER PROCEDURE AñadirCarrera
 	@Vueltas TINYINT
 AS BEGIN
 	BEGIN TRANSACTION
-		INSERT INTO Carreras (Circuito, [Fecha y Hora Fin],[Nº vueltas]) VALUES (@Circuito, @FechaHoraFin, @Vueltas)
+		INSERT INTO Carreras (Circuito, [Fecha y Hora Fin],[Num vueltas]) VALUES (@Circuito, @FechaHoraFin, @Vueltas)
 	COMMIT
 END
 
@@ -172,6 +172,12 @@ AS BEGIN
 	COMMIT
 END
 GO
+
+--Nombre: InsertarPilotoCarrera
+--Descripción: Inscribe a un piloto en una carrera insertandolo en la tabla pilotoscarreras
+--Entrada: IdPiloto, Codigo de Carrera
+--Salida: Piloto inscrito en una carrera
+
 CREATE OR ALTER PROCEDURE InsertarPilotoCarrera
     @IDPiloto TINYINT,
     @CodigoCarrera TINYINT
