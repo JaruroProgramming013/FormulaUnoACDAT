@@ -20,18 +20,17 @@ AS BEGIN
 	DECLARE @IdPiloto2 SMALLINT
 	DECLARE @IdPiloto3 SMALLINT
 	DECLARE @Tipo SMALLINT
-	DECLARE @Importe SMALLMONEY
-	DECLARE @Cuota DECIMAL(4,2)
+	DECLARE @Posicion TINYINT
 
 	SELECT @CodigoCarrera = [Codigo Carrera] FROM inserted
 	SELECT @IdPiloto1 = [ID Piloto1] FROM inserted
 	SELECT @IdPiloto2 = [ID Piloto2] FROM inserted
 	SELECT @IdPiloto3 = [ID Piloto3] FROM inserted
+	SELECT @Posicion Posicion FROM inserted
 	SELECT @Tipo = Tipo FROM inserted
-	SELECT @Importe = Importe FROM inserted
-	SELECT @Cuota = Cuota FROM inserted
 
-	SELECT @TotalApostado = SUM([Ganancia]) FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Tipo, @Importe, @Cuota)
+
+	SELECT @TotalApostado = SUM([Ganancia]) FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
 	IF @TotalApostado > 10000
 		THROW 51001, 'Se ha superado el limite de apuestas a este piloto.', 1
