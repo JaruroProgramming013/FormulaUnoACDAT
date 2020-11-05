@@ -109,6 +109,8 @@ EXECUTE InscribirPilotoCarrera 13,3
 EXECUTE InscribirPilotoCarrera 14,3
 EXECUTE InscribirPilotoCarrera 15,3
 
+
+
 SELECT * FROM PilotosCarreras
 
 GO
@@ -171,10 +173,78 @@ select * from Transacciones
 
 GO
 
-EXECUTE GrabarApuestas 1, 1, 1, 1, NULL, NULL, 30
-EXECUTE GrabarApuestas 2, 1, 3, 1, 3, 4, 10
-EXECUTE GrabarApuestas 1, 1, 2, 4, NULL, NULL, 7
-EXECUTE GrabarApuestas 4, 1, 1, 1, NULL, NULL, 23
+					
+EXECUTE GrabarApuestas 1, 1 , 1, 1, null, null, 3, 10
+EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 5
+EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 4
+EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
+EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 7
+EXECUTE GrabarApuestas 7, 1 , 3, 4, 5, 1, null, 5
+EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 4
+EXECUTE GrabarApuestas 9, 2 , 1, 8, null, null, 6, 3
+EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 24
+EXECUTE GrabarApuestas 10, 3, 1, 2, null, null, 4, 30
+EXECUTE GrabarApuestas 11, 2 , 3, 4, 3, 2, null, 23
+EXECUTE GrabarApuestas 12, 1 , 1, 7, null, null, 3, 12
+EXECUTE GrabarApuestas 7, 3, 1, 9, null, null, 1, 18
+EXECUTE GrabarApuestas 14, 2 , 3, 4, 1, 3, null, 4
+EXECUTE GrabarApuestas 16, 2 , 2, 6, null, null, null, 2
+EXECUTE GrabarApuestas 11,1 , 2, 10, null, null, null, 5
+EXECUTE GrabarApuestas 1,2 , 2, 4, null, null, null, 6
+EXECUTE GrabarApuestas 7,3 , 2, 12, null, null, null, 7
+EXECUTE GrabarApuestas 11,3 , 2, 3, null, null, null, 9
+EXECUTE GrabarApuestas 8,2 , 2, 5, null, null, null, 2
 
-SELECT * FROM Apuestas
+
+								
+EXECUTE IntroducirDatosFinCarrera 1, 1, TIMEFROMPARTS( 0,1,20,34,3), 3
+EXECUTE IntroducirDatosFinCarrera 2, 1, TIMEFROMPARTS( 0,1,40,45,3), 2
+EXECUTE IntroducirDatosFinCarrera 3, 1, TIMEFROMPARTS( 0,1,32,65,3), 1
+EXECUTE IntroducirDatosFinCarrera 4, 1, TIMEFROMPARTS( 0,1,34,76,3), 5
+EXECUTE IntroducirDatosFinCarrera 5, 1, TIMEFROMPARTS( 0,1,50,65,3), 6
+EXECUTE IntroducirDatosFinCarrera 6, 1, TIMEFROMPARTS( 0,1,12,24,3), 7
+EXECUTE IntroducirDatosFinCarrera 7, 1, TIMEFROMPARTS( 0,1,17,37,3), 9
+EXECUTE IntroducirDatosFinCarrera 8, 1, TIMEFROMPARTS( 0,1,18,13,3), 8
+EXECUTE IntroducirDatosFinCarrera 9, 1, TIMEFROMPARTS( 0,1,40,63,3), 4
+EXECUTE IntroducirDatosFinCarrera 10, 1, TIMEFROMPARTS( 0,1,1,34,3), 10
+EXECUTE IntroducirDatosFinCarrera 11, 1, TIMEFROMPARTS( 0,1,41,45,3), 13
+EXECUTE IntroducirDatosFinCarrera 12, 1, TIMEFROMPARTS( 0,1,51,76,3), 15
+EXECUTE IntroducirDatosFinCarrera 13, 1, TIMEFROMPARTS( 0,1,33,76,3), 12
+EXECUTE IntroducirDatosFinCarrera 14, 1, TIMEFROMPARTS( 0,1,43,56,3), 14
+EXECUTE IntroducirDatosFinCarrera 15, 1, TIMEFROMPARTS( 0,1,13,33,3), 11
+
+EXECUTE IntroducirDatosFinCarrera 1, 2, TIMEFROMPARTS( 0,1,24,34,3), 5
+EXECUTE IntroducirDatosFinCarrera 2, 2, TIMEFROMPARTS( 0,1,50,45,3), 4
+EXECUTE IntroducirDatosFinCarrera 3, 2, TIMEFROMPARTS( 0,1,32,65,3), 15
+EXECUTE IntroducirDatosFinCarrera 4, 2, TIMEFROMPARTS( 0,1,4,76,3), 12
+EXECUTE IntroducirDatosFinCarrera 5, 2, TIMEFROMPARTS( 0,1,52,65,3), 1
+EXECUTE IntroducirDatosFinCarrera 6, 2, TIMEFROMPARTS( 0,1,32,24,3),13
+EXECUTE IntroducirDatosFinCarrera 7, 2, TIMEFROMPARTS( 0,1,15,37,3), 7
+EXECUTE IntroducirDatosFinCarrera 8, 2, TIMEFROMPARTS( 0,1,58,13,3), 2
+EXECUTE IntroducirDatosFinCarrera 9, 2, TIMEFROMPARTS( 0,1,44,63,3), 10
+EXECUTE IntroducirDatosFinCarrera 10, 2, TIMEFROMPARTS( 0,1,13,34,3), 11
+EXECUTE IntroducirDatosFinCarrera 11, 2, TIMEFROMPARTS( 0,1,4,45,3), 3
+EXECUTE IntroducirDatosFinCarrera 12, 2, TIMEFROMPARTS( 0,1,5,76,3), 9
+EXECUTE IntroducirDatosFinCarrera 13, 2, TIMEFROMPARTS( 0,1,33,76,3), 14
+EXECUTE IntroducirDatosFinCarrera 14, 2, TIMEFROMPARTS( 0,1,3,56,3), 8
+EXECUTE IntroducirDatosFinCarrera 15, 2, TIMEFROMPARTS( 0,1,13,33,3), 6
+
+EXECUTE IntroducirDatosFinCarrera 1, 3, TIMEFROMPARTS( 0,1,24,34,3), 13
+EXECUTE IntroducirDatosFinCarrera 2, 3, TIMEFROMPARTS( 0,1,50,45,3),9
+EXECUTE IntroducirDatosFinCarrera 3, 3, TIMEFROMPARTS( 0,1,32,65,3), 12
+EXECUTE IntroducirDatosFinCarrera 4, 3, TIMEFROMPARTS( 0,1,4,76,3), 3
+EXECUTE IntroducirDatosFinCarrera 5, 3, TIMEFROMPARTS( 0,1,52,65,3), 8
+EXECUTE IntroducirDatosFinCarrera 6, 3, TIMEFROMPARTS( 0,1,32,24,3),10
+EXECUTE IntroducirDatosFinCarrera 7, 3, TIMEFROMPARTS( 0,1,15,37,3), 15
+EXECUTE IntroducirDatosFinCarrera 8, 3, TIMEFROMPARTS( 0,1,58,13,3), 2
+EXECUTE IntroducirDatosFinCarrera 9, 3, TIMEFROMPARTS( 0,1,44,63,3), 11
+EXECUTE IntroducirDatosFinCarrera 10, 3, TIMEFROMPARTS( 0,1,13,34,3), 4
+EXECUTE IntroducirDatosFinCarrera 11, 3, TIMEFROMPARTS( 0,1,4,45,3), 5
+EXECUTE IntroducirDatosFinCarrera 12, 3, TIMEFROMPARTS( 0,1,5,76,3), 1
+EXECUTE IntroducirDatosFinCarrera 13, 3, TIMEFROMPARTS( 0,1,33,76,3), 7
+EXECUTE IntroducirDatosFinCarrera 14, 3, TIMEFROMPARTS( 0,1,3,56,3), 6
+EXECUTE IntroducirDatosFinCarrera 15, 3, TIMEFROMPARTS( 0,1,13,33,3), 14
+
+
+SELECT * FROM Pilotos
 select * from Transacciones
