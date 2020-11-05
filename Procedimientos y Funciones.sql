@@ -172,3 +172,89 @@ AS BEGIN
 	COMMIT
 END
 GO
+
+--Nombre: FinalizarCarrera
+--Descripción: 
+--Entradas: 
+--Salida:
+
+
+GO
+
+
+--Nombre: DeterminarGanador
+--Descripción: Devuelve el resultado de una apuesta con ID especificado, 0 si no es ganador y 1 si es ganador.
+--Entradas: idApuesta, int
+--Salida: ganador, bit que indica 0 si no es ganador y 1 si es ganador.
+CREATE OR ALTER PROCEDURE DeterminarGanador @idApuesta INT,
+@ganador BIT OUTPUT
+AS
+BEGIN
+    SET @ganador = 0
+    DECLARE @tipo tinyint = (SELECT Tipo FROM Apuestas WHERE [ID Apuesta] = @idApuesta)
+	IF (@tipo = 1) -- Posición de Piloto
+        BEGIN
+            IF EXISTS
+            (
+                SELECT * FROM Apuestas AS A
+                INNER JOIN PilotosCarreras AS PC
+                    ON A.[Codigo Carrera] = PC.[Codigo Carrera]
+                           AND A.[ID Piloto1] = PC.[ID Piloto]
+                WHERE A.[ID Apuesta] = @idApuesta
+                  AND A.Posicion = PC.Posicion
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+    ELSE IF (@tipo = 2) -- Vuelta rápida
+        BEGIN
+            IF EXISTS -- No está bien aún
+            (
+                SELECT MasRapido.Tiempo, A.[ID Piloto1]
+                FROM Apuestas AS A
+                INNER JOIN PilotosCarreras AS PC
+                        ON A.[Codigo Carrera] = PC.[Codigo Carrera]
+                            AND A.[ID Piloto1] = PC.[ID Piloto]
+                INNER JOIN
+                    (
+                        SELECT MIN(PC.[Vuelta rapida]) AS Tiempo
+                        FROM Apuestas AS A
+                                INNER JOIN PilotosCarreras AS PC ON A.[ID Piloto1] = PC.[ID Piloto]
+                        WHERE PC.[Codigo Carrera] = A.[Codigo Carrera]
+                        AND A.[ID Apuesta] = @idApuesta
+                    ) AS MasRapido ON PC.[Vuelta rapida] = MasRapido.Tiempo
+                WHERE A.[ID Apuesta] = @idApuesta
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+    ELSE IF (@tipo = 3) -- Podio
+        BEGIN
+            IF EXISTS
+            (
+                SELECT * FROM Apuestas AS A
+                INNER JOIN Carreras AS C
+                    ON A.[Codigo Carrera] = C.Codigo
+                INNER JOIN PilotosCarreras AS PC1
+                    ON C.Codigo = PC1.[Codigo Carrera]
+                       AND A.[ID Piloto1] = PC1.[ID Piloto]
+                INNER JOIN PilotosCarreras AS PC2
+                    ON C.Codigo = PC2.[Codigo Carrera]
+                       AND A.[ID Piloto2] = PC2.[ID Piloto]
+                INNER JOIN PilotosCarreras AS PC3
+                    ON C.Codigo = PC3.[Codigo Carrera]
+                       AND A.[ID Piloto3] = PC3.[ID Piloto]
+                WHERE A.[ID Apuesta] = @idApuesta
+                  AND PC1.Posicion BETWEEN 1 AND 3
+                  AND PC2.Posicion BETWEEN 1 AND 3
+                  AND PC3.Posicion BETWEEN 1 AND 3
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+	RETURN @ganador
+END
+GO

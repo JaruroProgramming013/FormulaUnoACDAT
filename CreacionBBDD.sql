@@ -42,7 +42,7 @@ CREATE TABLE PilotosCarreras(
 	 [ID Piloto] INT NOT NULL CONSTRAINT FK_CodigoPiloto FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE CASCADE ON UPDATE CASCADE
 	,[Codigo Carrera] SMALLINT NOT NULL CONSTRAINT FK_CodigoCarrera FOREIGN KEY REFERENCES Carreras(Codigo) ON DELETE CASCADE ON UPDATE CASCADE
 	,PRIMARY KEY ([ID Piloto], [Codigo Carrera])
-	,Posicion TINYINT NULL CONSTRAINT CK_Posicion CHECK (Posicion BETWEEN 1 AND 24)
+	,Posicion TINYINT NULL CONSTRAINT CK_PilotosCarreras_Posicion CHECK (Posicion BETWEEN 1 AND 24)
 	,[Vuelta rapida] TIME NULL
 )
 
@@ -53,10 +53,10 @@ CREATE TABLE Apuestas (
 	,[ID Piloto1] INT NOT NULL CONSTRAINT FK_ApuestasPilotos1 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
 	,[ID Piloto2] INT NULL CONSTRAINT FK_ApuestasPilotos2 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
 	,[ID Piloto3] INT NULL CONSTRAINT FK_ApuestasPilotos3 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ,Posicion TINYINT NULL CONSTRAINT CK_Apuestas_Posicion CHECK (Posicion BETWEEN 1 AND 24)
 	,Tipo TINYINT  NOT NULL CONSTRAINT CK_Tipo CHECK (Tipo BETWEEN 1 AND 3) --	-1. Posicion de un piloto 
 																			--	-2. Piloto que hace la vuelta rapida
 																			--	-3. Podium (primeros tres pilotos sin orden)
-
 	,Momento SMALLDATETIME NOT NULL
 	,Importe SMALLMONEY NOT NULL
 	,Cuota DECIMAL(4,2) NOT NULL CONSTRAINT CK_Cuota CHECK (Cuota > 1)
