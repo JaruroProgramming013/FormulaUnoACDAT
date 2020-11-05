@@ -1,27 +1,27 @@
 USE ApuestasF1
 GO
 
---PROCEDIMIENTOS DE INSERCIÓN DE DATOS
+--PROCEDIMIENTOS DE INSERCIï¿½N DE DATOS
 
 --Nombre: InscribirUsuario
---Descripción: Inscribe un usuario en nuestra BBDD
---Entrada: Nombre, email y contraseña
+--Descripciï¿½n: Inscribe un usuario en nuestra BBDD
+--Entrada: Nombre, email y contraseï¿½a
 --Salida: Un nuevo usuario
 
 CREATE OR ALTER PROCEDURE InscribirUsuario
 	@Nombre VARCHAR(30),
 	@email VARCHAR(50),
-	@Contraseña VARCHAR(30)
+	@Contraseï¿½a VARCHAR(30)
 AS BEGIN
 	BEGIN TRANSACTION
-		INSERT INTO Usuarios VALUES (@Nombre, 0, @email, @Contraseña)
+		INSERT INTO Usuarios VALUES (@Nombre, 0, @email, @Contraseï¿½a)
 	COMMIT
 END
 
 GO
 
 --Nombre: InsertarPiloto
---Descripción: Inscribe un piloto en nuestra BBDD
+--Descripciï¿½n: Inscribe un piloto en nuestra BBDD
 --Entrada: Numero, Nombre, Apellido, Siglas y Escuuderia
 --Salida: Un nuevo piloto
 
@@ -39,12 +39,12 @@ END
 
 GO
 
---Nombre: AñadirCarrera
---Descripción: Añade una carrera a nuestra BBDD
---Entradas: Código de carrera, Nombre del circuito, fecha y hora en la que se realiza y número de vueltas
+--Nombre: Aï¿½adirCarrera
+--Descripciï¿½n: Aï¿½ade una carrera a nuestra BBDD
+--Entradas: Cï¿½digo de carrera, Nombre del circuito, fecha y hora en la que se realiza y nï¿½mero de vueltas
 --Salida: Una nueva carrera
 
-CREATE OR ALTER PROCEDURE AñadirCarrera
+CREATE OR ALTER PROCEDURE Aï¿½adirCarrera
 	@Circuito VARCHAR(20),
 	@FechaHoraInicio DATETIME,
 	@Vueltas TINYINT
@@ -57,7 +57,7 @@ END
 GO
 
 --Nombre: InsertarPilotoCarrera
---Descripción: Inscribe a un piloto en una carrera insertandolo en la tabla pilotoscarreras
+--Descripciï¿½n: Inscribe a un piloto en una carrera insertandolo en la tabla pilotoscarreras
 --Entrada: IdPiloto, Codigo de Carrera
 --Salida: Piloto inscrito en una carrera
 
@@ -72,9 +72,9 @@ END
 GO
 
 --Nombre: GenerarTransaccion
---Descripción: Añade una transacción a nuestra BBDD
+--Descripciï¿½n: Aï¿½ade una transacciï¿½n a nuestra BBDD
 --Entradas: ID, IdUsuario, Importe, Concepto
---Salida: Una nueva transacción
+--Salida: Una nueva transacciï¿½n
 
 CREATE OR ALTER PROCEDURE GenerarTransaccion
 	@IDUsuario INT,
@@ -92,7 +92,7 @@ GO
 --FUNCIONES ESCALARES
 
 --Nombre: AsignarCuota
---Descripción: Asigna una cuota de apuesta en función de las apuestas ya realizadas y los paramentros de entrada
+--Descripciï¿½n: Asigna una cuota de apuesta en funciï¿½n de las apuestas ya realizadas y los paramentros de entrada
 --Entradas: circuito, piloto/pilotos por los que se apuesta, tipo de apuesta, momento
 --Salida: Un valor del tipo DECIMAL(4,2) que indica lo segura o arriesgada que es la apuesta y por lo tanto su beneficio en caso de ser acertada
 
@@ -122,7 +122,7 @@ END
 GO
 
 --Nombre: CalcularPremio
---Descripción: Devuelve el dinero que se gana con esa apuesta
+--Descripciï¿½n: Devuelve el dinero que se gana con esa apuesta
 --Entradas: Dinero apostado y cuota
 --Salida: Cantidad de dinero ganada
 
@@ -138,9 +138,9 @@ GO
 --RESTO DE PROCEDIMIENTOS
 
 --Nombre: ModificarSaldo
---Descripción: modifica el saldo de un usuario dado
+--Descripciï¿½n: modifica el saldo de un usuario dado
 --Entradas: Usuario, importe, concepto
---Salida: Modificación correspondiente del saldo del usuario dado y genera la transacción adecuada
+--Salida: Modificaciï¿½n correspondiente del saldo del usuario dado y genera la transacciï¿½n adecuada
 
 CREATE OR ALTER PROCEDURE ModificarSaldo
 	@Usuario SMALLINT,
@@ -167,10 +167,10 @@ END
 GO
 
 --Nombre: GrabarApuestas
---Descripción: Graba una apuesta en la base de datos
+--Descripciï¿½n: Graba una apuesta en la base de datos
 --Entradas: tipo de apuesta, piloto/pilotos por los que se apuesta, circuito, importe
---Salida: Inserción de datos en la tabla apuestas y
---			reducción de saldo correspondiente en la tabla jugadores.
+--Salida: Inserciï¿½n de datos en la tabla apuestas y
+--			reducciï¿½n de saldo correspondiente en la tabla jugadores.
 
 CREATE OR ALTER PROCEDURE GrabarApuestas
 @IdUsuario SMALLINT,
@@ -194,12 +194,31 @@ AS BEGIN
 										@Importe,
 										dbo.AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
 
-		SET @Importe=-@Importe --La función ModificarSaldo suma el importe al saldo, cuando se graba una apuesta queremos disminuir
+		SET @Importe=-@Importe --La funciï¿½n ModificarSaldo suma el importe al saldo, cuando se graba una apuesta queremos disminuir
 
-		EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Deducción por apuesta realizada'
+		EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Deducciï¿½n por apuesta realizada'
 
 	COMMIT
 END
 GO
 
+
+CREATE OR ALTER PROCEDURE IngresarRetirarDinero
+	@IdUsuario SMALLINT,
+	@Importe SMALLMONEY
+AS BEGIN 
+		DECLARE @Momento SMALLDATETIME
+	BEGIN TRANSACTION
+
+		SET @Momento = CURRENT_TIMESTAMP
+		
+		ELSE
+
+		EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Ingreso'
+		IF(@Importe > 0)
+		EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'RetiradaEfectivo'
+
+	COMMIT
+GO
+END
 
