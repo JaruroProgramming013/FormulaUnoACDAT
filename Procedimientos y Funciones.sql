@@ -228,8 +228,8 @@ GO
 
 --Nombre: GanaciasApuesta
 --Descripcion: genera una tabla con las ganancias que generan a cada usuario las apuestas para un caso concreto
---Entrada: 
---Salida: 
+--Entrada: Codico de carrera, Id del piloto 1, Id del piloto 2, Id del piloto 3, tipo de apuesta
+--Salida: Tabla Con las ganacias por cada apuesta de un usuario
 CREATE OR ALTER FUNCTION GanaciasApuesta (
 		@CodigoCarrera SMALLINT,  
 		@IdPiloto1 SMALLINT, 
@@ -237,16 +237,15 @@ CREATE OR ALTER FUNCTION GanaciasApuesta (
 		@IdPiloto3 SMALLINT,
 		@TipoApuesta TINYINT) 
 RETURNS TABLE AS
-RETURN(
-	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FROM Apuestas
-	WHERE (	[Codigo Carrera]=@CodigoCarrera AND
-			[ID Piloto1]=@IdPiloto1 AND
-			[ID Piloto2]=@IdPiloto2 AND
-			[ID Piloto3]=@IdPiloto3 AND
-			Tipo=@TipoApuesta
-			)
-)
+RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FROM Apuestas
+		WHERE	[Codigo Carrera]=@CodigoCarrera AND
+				[ID Piloto1]=@IdPiloto1 AND
+				ISNULL([ID Piloto2],0)=ISNULL(@IdPiloto2,0) AND
+				ISNULL([ID Piloto3],0)=ISNULL(@IdPiloto3,0) AND
+				Tipo=@TipoApuesta
+	)
 GO
+
 SELECT * FROM Apuestas
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
@@ -262,4 +261,17 @@ SELECT * FROM Apuestas
 	SET @Tipo = 1
 
 SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Tipo)
+
+
+
+--Nombre: FinalizarCarrera
+--Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
+--Entrada: Codigo Carrera
+--Salida: Saldos actualizados
+
+CREATE OR ALTER PROCEDURE FinalizarCarrera 
+	@CodigoCarrera SMALLINT
+
+
+
 
