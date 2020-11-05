@@ -168,3 +168,12 @@ EXECUTE ModificarSaldo 8, -23, @Tiempo, 'Pruebas en usuario 8'
 --EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de más dinero en exceso
 select * from Usuarios
 select * from Transacciones
+
+GO
+
+EXECUTE GrabarApuestas 1, 1, 1, 1, NULL, NULL, 30
+EXECUTE GrabarApuestas 2, 1, 3, 1, 3, 4, 10
+EXECUTE GrabarApuestas 1, 1, 2, 4, NULL, NULL, 7
+EXECUTE GrabarApuestas 4, 1, 1, 1, NULL, NULL, 23
+
+SELECT * FROM Apuestas

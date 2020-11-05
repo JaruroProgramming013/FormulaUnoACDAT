@@ -173,7 +173,7 @@ GO
 --			reduccion de saldo correspondiente en la tabla jugadores.
 
 CREATE OR ALTER PROCEDURE GrabarApuestas
-@IdUsuario SMALLINT,
+	@IdUsuario SMALLINT,
 	@IdCarrera SMALLINT,
 	@TipoApuesta TINYINT,
 	@Piloto1 TINYINT,
@@ -219,9 +219,47 @@ AS BEGIN
 		IF(@Importe > 0)
 			EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Ingreso'
 		ELSE
-			EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'RetiradaEfectivo'
+			EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Retirada efectivo'
 		
 
 	COMMIT
 END
 GO
+
+--Nombre: GanaciasApuesta
+--Descripcion: genera una tabla con las ganancias que generan a cada usuario las apuestas para un caso concreto
+--Entrada: 
+--Salida: 
+CREATE OR ALTER FUNCTION GanaciasApuesta (
+		@CodigoCarrera SMALLINT,  
+		@IdPiloto1 SMALLINT, 
+		@IdPiloto2 SMALLINT, 
+		@IdPiloto3 SMALLINT,
+		@TipoApuesta TINYINT) 
+RETURNS TABLE AS
+RETURN(
+	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FROM Apuestas
+	WHERE (	[Codigo Carrera]=@CodigoCarrera AND
+			[ID Piloto1]=@IdPiloto1 AND
+			[ID Piloto2]=@IdPiloto2 AND
+			[ID Piloto3]=@IdPiloto3 AND
+			Tipo=@TipoApuesta
+			)
+)
+GO
+SELECT * FROM Apuestas
+	DECLARE @TotalApostado SMALLMONEY
+	DECLARE @CodigoCarrera SMALLINT
+	DECLARE @IdPiloto1 SMALLINT
+	DECLARE @IdPiloto2 SMALLINT
+	DECLARE @IdPiloto3 SMALLINT
+	DECLARE @Tipo SMALLINT
+
+	SET @CodigoCarrera = 1
+	SET @IdPiloto1 = 1
+	SET @IdPiloto2 = NULL
+	SET @IdPiloto3 = NULL
+	SET @Tipo = 1
+
+SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Tipo)
+
