@@ -269,14 +269,31 @@ SELECT * FROM Apuestas
 SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
 
-
+GO
 --Nombre: FinalizarCarrera
 --Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
 --Entrada: Codigo Carrera
 --Salida: Saldos actualizados
 
-CREATE OR ALTER PROCEDURE FinalizarCarrera 
-	@CodigoCarrera SMALLINT
+CREATE OR ALTER PROCEDURE introducirDatosFinCarrera(
+	@IdPiloto SMALLINT
+	,@CodigoCarrera SMALLINT
+	,@Posicion TINYINT
+	,@Tiempo TIME
+	)
+	
+	AS BEGIN
+		BEGIN TRANSACTION
+			INSERT INTO PilotosCarreras VALUES (
+												@IdPiloto,
+												@CodigoCarrera,
+												@Posicion,
+												@Tiempo
+											)
+		COMMIT
+	END
 
 
 
+
+	GO
