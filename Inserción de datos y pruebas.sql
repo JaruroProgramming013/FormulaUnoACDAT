@@ -177,3 +177,4 @@ EXECUTE GrabarApuestas 1, 1, 2, 4, NULL, NULL, 7
 EXECUTE GrabarApuestas 4, 1, 1, 1, NULL, NULL, 23
 
 SELECT * FROM Apuestas
+select * from Transacciones

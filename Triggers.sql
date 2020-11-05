@@ -12,7 +12,8 @@ GO
 --No permite realizar más apuestas si se supera el limite de 10.000 euros por tipo de apuesta
 CREATE OR ALTER TRIGGER MaximoAlcanzado ON Apuestas
 AFTER INSERT
-AS
+AS BEGIN
+
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
 	DECLARE @IdPiloto1 SMALLINT
@@ -35,5 +36,6 @@ AS
 	IF @TotalApostado > 10000
 		THROW 51001, 'Se ha superado el limite de apuestas a este piloto.', 1
 	ROLLBACK
+
 END
 GO
