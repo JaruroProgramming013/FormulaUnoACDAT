@@ -46,21 +46,21 @@ GO
 DECLARE @Datetime DATETIME
 
 SET @Datetime = DATETIMEFROMPARTS(2020, 12, 23, 14, 0, 0, 0)
-EXECUTE AñadirCarrera 'Suzuka', @Datetime, 63
+EXECUTE AnhadirCarrera 'Suzuka', @Datetime, 63
 SET @Datetime = DATETIMEFROMPARTS(2021, 1, 18, 15, 0, 0, 0)
-EXECUTE AñadirCarrera 'Imola', @Datetime, 72
+EXECUTE AnhadirCarrera 'Imola', @Datetime, 72
 SET @Datetime = DATETIMEFROMPARTS(2021, 2, 14, 14, 0, 0, 0)
-EXECUTE AñadirCarrera 'Montreal', @Datetime, 58
+EXECUTE AnhadirCarrera 'Montreal', @Datetime, 58
 SET @Datetime = DATETIMEFROMPARTS(2021, 3, 28, 13, 0, 0, 0)
-EXECUTE AñadirCarrera 'Monza', @Datetime, 83
+EXECUTE AnhadirCarrera 'Monza', @Datetime, 83
 SET @Datetime = DATETIMEFROMPARTS(2021, 5, 2, 20, 30, 0, 0)
-EXECUTE AñadirCarrera 'AbuDabi', @Datetime, 73
+EXECUTE AnhadirCarrera 'AbuDabi', @Datetime, 73
 SET @Datetime = DATETIMEFROMPARTS(2021, 6, 30, 15, 30, 0, 0)
-EXECUTE AñadirCarrera 'Monaco', @Datetime, 61
+EXECUTE AnhadirCarrera 'Monaco', @Datetime, 61
 SET @Datetime = DATETIMEFROMPARTS(2021, 8, 24, 18, 0, 0, 0)
-EXECUTE AñadirCarrera 'SaoPaulo', @Datetime, 58
+EXECUTE AnhadirCarrera 'SaoPaulo', @Datetime, 58
 SET @Datetime = DATETIMEFROMPARTS(2021, 9, 29, 7, 0, 0, 0)
-EXECUTE AñadirCarrera 'Indianapolis', @Datetime, 69
+EXECUTE AnhadirCarrera 'Indianapolis', @Datetime, 69
 
 --select * from Carreras
 

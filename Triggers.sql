@@ -11,7 +11,7 @@ GO
 
 --No permite realizar más apuestas si se supera el limite de 10.000 euros por tipo de apuesta
 CREATE TRIGGER MaximoAlcanzado ON Apuestas
-INSTEAD OF INSERT
+AFTER INSERT
 AS
 	DECLARE @TotalApostado SMALLMONEY
 
