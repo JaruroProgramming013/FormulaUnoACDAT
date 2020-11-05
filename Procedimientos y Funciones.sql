@@ -192,6 +192,7 @@ AS
 BEGIN
     SET @ganador = 0
     DECLARE @tipo tinyint = (SELECT Tipo FROM Apuestas WHERE [ID Apuesta] = @idApuesta)
+    DECLARE @carrera INT = (SELECT [Codigo Carrera] FROM Apuestas AS A WHERE A.[ID Apuesta] = @idApuesta)
 	IF (@tipo = 1) -- Posición de Piloto
         BEGIN
             IF EXISTS
@@ -209,7 +210,7 @@ BEGIN
         END
     ELSE IF (@tipo = 2) -- Vuelta rápida
         BEGIN
-            IF EXISTS -- No está bien aún
+            IF EXISTS
             (
                 SELECT MasRapido.Tiempo, A.[ID Piloto1]
                 FROM Apuestas AS A
@@ -221,8 +222,7 @@ BEGIN
                         SELECT MIN(PC.[Vuelta rapida]) AS Tiempo
                         FROM Apuestas AS A
                                 INNER JOIN PilotosCarreras AS PC ON A.[ID Piloto1] = PC.[ID Piloto]
-                        WHERE PC.[Codigo Carrera] = A.[Codigo Carrera]
-                        AND A.[ID Apuesta] = @idApuesta
+                        WHERE PC.[Codigo Carrera] = @carrera
                     ) AS MasRapido ON PC.[Vuelta rapida] = MasRapido.Tiempo
                 WHERE A.[ID Apuesta] = @idApuesta
             )
