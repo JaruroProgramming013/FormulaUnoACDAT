@@ -179,6 +179,7 @@ CREATE OR ALTER PROCEDURE GrabarApuestas
 	@Piloto1 TINYINT,
 	@Piloto2 TINYINT = NULL,
 	@Piloto3 TINYINT = NULL,
+	@Posicion TINYINT = NULL,
 	@Importe SMALLMONEY
 AS BEGIN
 	BEGIN TRANSACTION
@@ -189,6 +190,7 @@ AS BEGIN
 		INSERT INTO Apuestas VALUES (	@IdUsuario,
 										@IdCarrera,
 										@Piloto1, @Piloto2, @Piloto3,
+										@Posicion,
 										@TipoApuesta,
 										@Momento,
 										@Importe,
@@ -211,8 +213,9 @@ CREATE OR ALTER PROCEDURE IngresarRetirarDinero
 	@IdUsuario SMALLINT,
 	@Importe SMALLMONEY
 AS BEGIN 
-		DECLARE @Momento SMALLDATETIME
 	BEGIN TRANSACTION
+
+		DECLARE @Momento SMALLDATETIME
 
 		SET @Momento = CURRENT_TIMESTAMP
 		
@@ -221,7 +224,6 @@ AS BEGIN
 		ELSE
 			EXECUTE ModificarSaldo @IdUsuario,@Importe, @Momento, 'Retirada efectivo'
 		
-
 	COMMIT
 END
 GO
@@ -235,6 +237,7 @@ CREATE OR ALTER FUNCTION GanaciasApuesta (
 		@IdPiloto1 SMALLINT, 
 		@IdPiloto2 SMALLINT, 
 		@IdPiloto3 SMALLINT,
+		@Posicion TINYINT,
 		@TipoApuesta TINYINT) 
 RETURNS TABLE AS
 RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FROM Apuestas
@@ -242,6 +245,7 @@ RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FRO
 				[ID Piloto1]=@IdPiloto1 AND
 				ISNULL([ID Piloto2],0)=ISNULL(@IdPiloto2,0) AND
 				ISNULL([ID Piloto3],0)=ISNULL(@IdPiloto3,0) AND
+				ISNULL(Posicion,0)=ISNULL(@Posicion,0) AND
 				Tipo=@TipoApuesta
 	)
 GO
@@ -252,15 +256,17 @@ SELECT * FROM Apuestas
 	DECLARE @IdPiloto1 SMALLINT
 	DECLARE @IdPiloto2 SMALLINT
 	DECLARE @IdPiloto3 SMALLINT
+	DECLARE @Posicion TINYINT
 	DECLARE @Tipo SMALLINT
 
 	SET @CodigoCarrera = 1
 	SET @IdPiloto1 = 1
 	SET @IdPiloto2 = NULL
 	SET @IdPiloto3 = NULL
+	SET @Posicion = 3
 	SET @Tipo = 1
 
-SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Tipo)
+SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
 
 
@@ -271,7 +277,6 @@ SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPil
 
 CREATE OR ALTER PROCEDURE FinalizarCarrera 
 	@CodigoCarrera SMALLINT
-
 
 
 

@@ -53,14 +53,15 @@ CREATE TABLE Apuestas (
 	,[ID Piloto1] SMALLINT NOT NULL CONSTRAINT FK_ApuestasPilotos1 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION --¿Se podría cambiar para hacerlo con el número de piloto?
 	,[ID Piloto2] SMALLINT NULL CONSTRAINT FK_ApuestasPilotos2 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION		--Posiblemente cambiar estructura de BBDD
 	,[ID Piloto3] SMALLINT NULL CONSTRAINT FK_ApuestasPilotos3 FOREIGN KEY REFERENCES Pilotos(ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+	,Posicion TINYINT NULL CONSTRAINT CK_Apuestas_Posicion CHECK (Posicion BETWEEN 1 AND 24)
 	,Tipo TINYINT  NOT NULL CONSTRAINT CK_Tipo CHECK (Tipo BETWEEN 1 AND 3) --	-1. Posicion de un piloto 
 																			--	-2. Piloto que hace la vuelta rapida
 																			--	-3. Podium (primeros tres pilotos sin orden)
-
 	,Momento SMALLDATETIME NOT NULL
 	,Importe SMALLMONEY NOT NULL
 	,Cuota DECIMAL(4,2) NOT NULL CONSTRAINT CK_Cuota CHECK (Cuota > 1)
 )
+
 
 GO
 
