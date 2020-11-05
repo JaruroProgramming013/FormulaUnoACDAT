@@ -1,5 +1,5 @@
 USE master
-DROP DATABASE ApuestasF1
+--DROP DATABASE ApuestasF1
 CREATE DATABASE ApuestasF1
 GO
 USE ApuestasF1

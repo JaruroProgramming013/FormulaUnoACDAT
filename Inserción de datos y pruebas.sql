@@ -1,23 +1,23 @@
---INSERCIÓN DE DATOS
+--INSERCIï¿½N DE DATOS
 USE ApuestasF1
 
 GO
-EXECUTE InscribirUsuario 'José', 'joselito@gmail.com', 'joselerelere'
+EXECUTE InscribirUsuario 'Jose', 'joselito@gmail.com', 'joselerelere'
 EXECUTE InscribirUsuario 'Javi', 'javieruste@gmail.com', 'javieperoconduste'
 EXECUTE InscribirUsuario 'George', 'sadouski@gmail.com', 'jorgeelcurioso'
 EXECUTE InscribirUsuario 'Josema', 'xemita95@gmail.com', 'matador'
 EXECUTE InscribirUsuario 'Leo', 'ElLeo@gmail.com', 'soyprofe'
-EXECUTE InscribirUsuario 'Companhero1', 'compañero1@gmail.com', 'compa1'
-EXECUTE InscribirUsuario 'Companhero2', 'compañero2@gmail.com', 'compa2'
-EXECUTE InscribirUsuario 'Companhero3', 'compañero3@gmail.com', 'compa3'
-EXECUTE InscribirUsuario 'Companhero4', 'compañero4@gmail.com', 'compa4'
-EXECUTE InscribirUsuario 'Companhero5', 'compañero5@gmail.com', 'compa5'
-EXECUTE InscribirUsuario 'Companhero6', 'compañero6@gmail.com', 'compa6'
-EXECUTE InscribirUsuario 'Companhero7', 'compañero7@gmail.com', 'compa7'
-EXECUTE InscribirUsuario 'Companhero8', 'compañero8@gmail.com', 'compa8'
-EXECUTE InscribirUsuario 'Companhero9', 'compañero9@gmail.com', 'compa9'
-EXECUTE InscribirUsuario 'Companhero10', 'compañero10@gmail.com', 'compa10'
-EXECUTE InscribirUsuario 'Companhero11', 'compañero11@gmail.com', 'compa11'
+EXECUTE InscribirUsuario 'Companhero1', 'compaï¿½ero1@gmail.com', 'compa1'
+EXECUTE InscribirUsuario 'Companhero2', 'compaï¿½ero2@gmail.com', 'compa2'
+EXECUTE InscribirUsuario 'Companhero3', 'compaï¿½ero3@gmail.com', 'compa3'
+EXECUTE InscribirUsuario 'Companhero4', 'compaï¿½ero4@gmail.com', 'compa4'
+EXECUTE InscribirUsuario 'Companhero5', 'compaï¿½ero5@gmail.com', 'compa5'
+EXECUTE InscribirUsuario 'Companhero6', 'compaï¿½ero6@gmail.com', 'compa6'
+EXECUTE InscribirUsuario 'Companhero7', 'compaï¿½ero7@gmail.com', 'compa7'
+EXECUTE InscribirUsuario 'Companhero8', 'compaï¿½ero8@gmail.com', 'compa8'
+EXECUTE InscribirUsuario 'Companhero9', 'compaï¿½ero9@gmail.com', 'compa9'
+EXECUTE InscribirUsuario 'Companhero10', 'compaï¿½ero10@gmail.com', 'compa10'
+EXECUTE InscribirUsuario 'Companhero11', 'compaï¿½ero11@gmail.com', 'compa11'
 
 --select * from Usuarios
 
@@ -165,7 +165,7 @@ EXECUTE ModificarSaldo 8, 43, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, 36, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, 42, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, -23, @Tiempo, 'Pruebas en usuario 8'
---EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de más dinero en exceso
+--EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de mï¿½s dinero en exceso
 select * from Usuarios
 select * from Transacciones
 

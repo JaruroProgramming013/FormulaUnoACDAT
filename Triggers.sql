@@ -9,10 +9,10 @@ AS
 	ROLLBACK
 GO
 
---No permite realizar más apuestas si se supera el limite de 10.000 euros por tipo de apuesta
+--No permite realizar mï¿½s apuestas si se supera el limite de 10.000 euros por tipo de apuesta
 CREATE OR ALTER TRIGGER MaximoAlcanzado ON Apuestas
 AFTER INSERT
-AS
+AS BEGIN
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
 	DECLARE @IdPiloto1 SMALLINT
@@ -37,3 +37,21 @@ AS
 	ROLLBACK
 END
 GO
+
+--Este trigger evita que se inserten numeros de pilotos duplicados en una misma carrera
+
+CREATE OR ALTER TRIGGER EvitarMismoNumeroCarrera ON PilotosCarreras
+AFTER INSERT
+AS BEGIN
+    IF (
+        SELECT TOP 1 COUNT(P.Numero) AS NumeroVecesAparece
+        FROM Pilotos P
+                 INNER JOIN inserted PC on P.ID = PC.[ID Piloto]
+        GROUP BY P.Numero
+        ORDER BY NumeroVecesAparece
+    ) > 1
+    RAISERROR ('No inserte numeros duplicados de pilotos.', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               )
+END
