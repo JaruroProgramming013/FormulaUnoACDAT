@@ -8,3 +8,10 @@ AS
 	THROW 51000, 'La apuesta no se puede modificar ni borrar.', 1
 	ROLLBACK
 GO
+
+--No permite realizar más apuestas si se supera el limite de 10.000 euros por tipo de apuesta
+CREATE TRIGGER MaximoAlcanzado ON Apuestas
+INSTEAD OF INSERT
+AS
+	DECLARE @TotalApostado SMALLMONEY
+

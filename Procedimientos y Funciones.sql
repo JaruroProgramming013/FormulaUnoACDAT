@@ -30,7 +30,7 @@ CREATE OR ALTER PROCEDURE InsertarPiloto
 	@Nombre VARCHAR(30),
 	@Apellido VARCHAR(50),
 	@Siglas CHAR(3),
-	@Escuderia CHAR(3)
+	@Escuderia VARCHAR(20)
 AS BEGIN
 	BEGIN TRANSACTION
 		INSERT INTO Pilotos VALUES (@Numero, @Nombre, @Apellido, @Siglas, @Escuderia)
@@ -46,14 +46,29 @@ GO
 
 CREATE OR ALTER PROCEDURE AñadirCarrera
 	@Circuito VARCHAR(20),
-	@FechaHoraFin DATETIME,
+	@FechaHoraInicio DATETIME,
 	@Vueltas TINYINT
 AS BEGIN
 	BEGIN TRANSACTION
-		INSERT INTO Carreras (Circuito, [Fecha y Hora Fin],[Num vueltas]) VALUES (@Circuito, @FechaHoraFin, @Vueltas)
+		INSERT INTO Carreras (Circuito, [Fecha y Hora Inicio],[Num vueltas]) VALUES (@Circuito, @FechaHoraInicio, @Vueltas)
 	COMMIT
 END
 
+GO
+
+--Nombre: InsertarPilotoCarrera
+--Descripción: Inscribe a un piloto en una carrera insertandolo en la tabla pilotoscarreras
+--Entrada: IdPiloto, Codigo de Carrera
+--Salida: Piloto inscrito en una carrera
+
+CREATE OR ALTER PROCEDURE InscribirPilotoCarrera
+    @IDPiloto SMALLINT,
+    @CodigoCarrera SMALLINT
+AS BEGIN
+    BEGIN TRAN
+        INSERT INTO PilotosCarreras ([ID Piloto], [Codigo Carrera]) VALUES (@IDPiloto, @CodigoCarrera)
+    COMMIT
+END
 GO
 
 --Nombre: GenerarTransaccion
@@ -74,7 +89,7 @@ END
 
 GO
 
---FUNCION DE ASIGNACIÓN DE LA CUOTA
+--FUNCIONES ESCALARES
 
 --Nombre: AsignarCuota
 --Descripción: Asigna una cuota de apuesta en función de las apuestas ya realizadas y los paramentros de entrada
@@ -89,9 +104,9 @@ GO
 
 CREATE OR ALTER FUNCTION AsignarCuota (
 	@CodigoCarrera SMALLINT,
-	@CodigoPiloto1 TINYINT,
-	@CodigoPiloto2 TINYINT,
-	@CodigoPiloto3 TINYINT,
+	@IdPiloto1 SMALLINT,
+	@IdPiloto2 SMALLINT = NULL,
+	@IdPiloto3 SMALLINT = NULL,
 	@TipoApuesta TINYINT,
 	@Momento SMALLDATETIME)
 RETURNS DECIMAL(4,2) AS
@@ -101,9 +116,23 @@ BEGIN
 	--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
 	SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
 
-	RETURN @Cuota
+	RETURN @Cuota*20
 END
 
+GO
+
+--Nombre: CalcularPremio
+--Descripción: Devuelve el dinero que se gana con esa apuesta
+--Entradas: Dinero apostado y cuota
+--Salida: Cantidad de dinero ganada
+
+CREATE OR ALTER FUNCTION CalcularPremio(
+    @DineroApostado SMALLMONEY,
+    @Cuota DECIMAL(4,2)
+) RETURNS SMALLMONEY 
+AS BEGIN
+    RETURN @DineroApostado*@Cuota
+END
 GO
 
 --RESTO DE PROCEDIMIENTOS
@@ -173,23 +202,4 @@ AS BEGIN
 END
 GO
 
---Nombre: InsertarPilotoCarrera
---Descripción: Inscribe a un piloto en una carrera insertandolo en la tabla pilotoscarreras
---Entrada: IdPiloto, Codigo de Carrera
---Salida: Piloto inscrito en una carrera
 
-CREATE OR ALTER PROCEDURE InsertarPilotoCarrera
-    @IDPiloto TINYINT,
-    @CodigoCarrera TINYINT
-AS BEGIN
-    BEGIN TRAN
-        INSERT INTO PilotoCarreras ([Numero Piloto], [Codigo Carrera]) VALUES (@IDPiloto, @CodigoCarrera)
-    COMMIT
-END
-GO
-CREATE OR ALTER FUNCTION calcularPremio(
-    @DineroApostado SMALLMONEY,
-    @Cuota DECIMAL(4,2)
-) RETURNS SMALLMONEY AS BEGIN
-    RETURN @DineroApostado*@Cuota
-end

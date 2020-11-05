@@ -1,6 +1,6 @@
 --INSERCIÓN DE DATOS
 USE ApuestasF1
---Usuarios:
+
 GO
 EXECUTE InscribirUsuario 'José', 'joselito@gmail.com', 'joselerelere'
 EXECUTE InscribirUsuario 'Javi', 'javieruste@gmail.com', 'javieperoconduste'
@@ -39,6 +39,8 @@ EXECUTE InsertarPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
 EXECUTE InsertarPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
 EXECUTE InsertarPiloto 55, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
 
+--select * from Pilotos
+
 GO
 
 DECLARE @Datetime DATETIME
@@ -60,4 +62,109 @@ EXECUTE AñadirCarrera 'SaoPaulo', @Datetime, 58
 SET @Datetime = DATETIMEFROMPARTS(2021, 9, 29, 7, 0, 0, 0)
 EXECUTE AñadirCarrera 'Indianapolis', @Datetime, 69
 
-select * from PilotoCarreras
+--select * from Carreras
+
+GO
+
+EXECUTE InscribirPilotoCarrera 1,1
+EXECUTE InscribirPilotoCarrera 2,1
+EXECUTE InscribirPilotoCarrera 3,1
+EXECUTE InscribirPilotoCarrera 4,1
+EXECUTE InscribirPilotoCarrera 5,1
+EXECUTE InscribirPilotoCarrera 6,1
+EXECUTE InscribirPilotoCarrera 7,1
+EXECUTE InscribirPilotoCarrera 9,1
+EXECUTE InscribirPilotoCarrera 10,1
+EXECUTE InscribirPilotoCarrera 11,1
+EXECUTE InscribirPilotoCarrera 12,1
+EXECUTE InscribirPilotoCarrera 13,1
+EXECUTE InscribirPilotoCarrera 14,1
+EXECUTE InscribirPilotoCarrera 15,1
+EXECUTE InscribirPilotoCarrera 1,2
+EXECUTE InscribirPilotoCarrera 2,2
+EXECUTE InscribirPilotoCarrera 3,2
+EXECUTE InscribirPilotoCarrera 4,2
+EXECUTE InscribirPilotoCarrera 5,2
+EXECUTE InscribirPilotoCarrera 6,2
+EXECUTE InscribirPilotoCarrera 7,2
+EXECUTE InscribirPilotoCarrera 9,2
+EXECUTE InscribirPilotoCarrera 10,2
+EXECUTE InscribirPilotoCarrera 11,2
+EXECUTE InscribirPilotoCarrera 12,2
+EXECUTE InscribirPilotoCarrera 13,2
+EXECUTE InscribirPilotoCarrera 14,2
+EXECUTE InscribirPilotoCarrera 15,2
+EXECUTE InscribirPilotoCarrera 1,3
+EXECUTE InscribirPilotoCarrera 2,3
+EXECUTE InscribirPilotoCarrera 3,3
+EXECUTE InscribirPilotoCarrera 4,3
+EXECUTE InscribirPilotoCarrera 5,3
+EXECUTE InscribirPilotoCarrera 6,3
+EXECUTE InscribirPilotoCarrera 7,3
+EXECUTE InscribirPilotoCarrera 9,3
+EXECUTE InscribirPilotoCarrera 10,3
+EXECUTE InscribirPilotoCarrera 11,3
+EXECUTE InscribirPilotoCarrera 12,3
+EXECUTE InscribirPilotoCarrera 13,3
+EXECUTE InscribirPilotoCarrera 14,3
+EXECUTE InscribirPilotoCarrera 15,3
+
+SELECT * FROM PilotosCarreras
+
+GO
+DECLARE @Ahora DATETIME
+SET @Ahora = CURRENT_TIMESTAMP
+EXECUTE GenerarTransaccion 1, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 2, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 3, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 4, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 5, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 10, @Ahora, 1, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 1, @Ahora, 10, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 1, @Ahora, 100, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 1, @Ahora, -80, 'Transaccion de prueba'
+EXECUTE GenerarTransaccion 1, @Ahora, -1, 'Transaccion de prueba'
+
+SELECT * FROM TRANSACCIONES
+
+GO
+
+--PRUEBAS DE FUNCIONES ESCLARES
+
+DECLARE @Resultado DECIMAL (4,2)
+DECLARE @Tiempo SMALLDATETIME
+SET @Tiempo = CURRENT_TIMESTAMP
+SET @Resultado = dbo.AsignarCuota(1, 1, NULL, NULL, 1, @Tiempo)
+PRINT @Resultado
+SET @Resultado = dbo.AsignarCuota(1, 1, 2, 3, 1, @Tiempo)
+PRINT @Resultado
+
+GO
+
+DECLARE @Ganado SMALLMONEY
+SET @Ganado = dbo.CalcularPremio (4,4)
+PRINT @Ganado
+SET @Ganado = dbo.CalcularPremio (3.1,4.2)
+PRINT @Ganado
+SET @Ganado = dbo.CalcularPremio (400,1.3)
+PRINT @Ganado
+
+GO
+
+DECLARE @Tiempo SMALLDATETIME
+SET @Tiempo = CURRENT_TIMESTAMP
+EXECUTE ModificarSaldo 1, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 1'
+EXECUTE ModificarSaldo 2, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 2'
+EXECUTE ModificarSaldo 1, -30, @Tiempo, 'Prueba Retirada de 30 euros en usuario 1'
+EXECUTE ModificarSaldo 3, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 3'
+EXECUTE ModificarSaldo 4, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 4'
+EXECUTE ModificarSaldo 5, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 5'
+EXECUTE ModificarSaldo 6, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 6'
+EXECUTE ModificarSaldo 10, 77, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 10'
+EXECUTE ModificarSaldo 8, 43, @Tiempo, 'Pruebas en usuario 8'
+EXECUTE ModificarSaldo 8, 36, @Tiempo, 'Pruebas en usuario 8'
+EXECUTE ModificarSaldo 8, 42, @Tiempo, 'Pruebas en usuario 8'
+EXECUTE ModificarSaldo 8, -23, @Tiempo, 'Pruebas en usuario 8'
+--EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de más dinero en exceso
+select * from Usuarios
+select * from Transacciones
