@@ -109,6 +109,8 @@ EXECUTE InscribirPilotoCarrera 13,3
 EXECUTE InscribirPilotoCarrera 14,3
 EXECUTE InscribirPilotoCarrera 15,3
 
+
+
 SELECT * FROM PilotosCarreras
 
 GO
@@ -171,10 +173,28 @@ select * from Transacciones
 
 GO
 
-EXECUTE GrabarApuestas 1, 1, 1, 1, NULL, NULL, 30
-EXECUTE GrabarApuestas 2, 1, 3, 1, 3, 4, 10
-EXECUTE GrabarApuestas 1, 1, 2, 4, NULL, NULL, 7
-EXECUTE GrabarApuestas 4, 1, 1, 1, NULL, NULL, 23
+					
+EXECUTE GrabarApuestas 1, 1 , 1, 1, null, null, 3, 10
+EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 5
+EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 4
+EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
+EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 7
+EXECUTE GrabarApuestas 7, 1 , 3, 4, 5, 1, null, 5
+EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 4
+EXECUTE GrabarApuestas 9, 2 , 1, 8, null, null, 6, 3
+EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 24
+EXECUTE GrabarApuestas 10, 3, 1, 2, null, null, 4, 30
+EXECUTE GrabarApuestas 11, 2 , 3, 4, 3, 2, null, 23
+EXECUTE GrabarApuestas 12, 1 , 1, 7, null, null, 3, 12
+EXECUTE GrabarApuestas 7, 3, 1, 9, null, null, 1, 18
+EXECUTE GrabarApuestas 14, 2 , 3, 4, 1, 3, null, 4
+EXECUTE GrabarApuestas 16, 2 , 2, 6, null, null, null, 2
+EXECUTE GrabarApuestas 11,1 , 2, 10, null, null, null, 5
+EXECUTE GrabarApuestas 1,2 , 2, 4, null, null, null, 6
+EXECUTE GrabarApuestas 7,3 , 2, 12, null, null, null, 7
+EXECUTE GrabarApuestas 11,3 , 2, 3, null, null, null, 9
+EXECUTE GrabarApuestas 8,2 , 2, 5, null, null, null, 2
 
-SELECT * FROM Apuestas
+
+SELECT * FROM Pilotos
 select * from Transacciones
