@@ -89,6 +89,39 @@ END
 
 GO
 
+--Nombre: introducirDatosFinCarrera
+--Descripcion:Introduce la posicion y la vuelta rapida de un piloto en una carrera
+--Entradas: id poiloto, codigo de la carrera, posicion del piloto y su vuelta rapida
+--Salidas: modificaciones en las tablas
+
+CREATE OR ALTER PROCEDURE introducirDatosFinCarrera( 
+	@IdPiloto SMALLINT 
+	,@CodigoCarrera SMALLINT 
+	,@Posicion TINYINT 
+	,@VueltaRapida TIME 
+	) 
+	 
+	AS BEGIN 
+		BEGIN TRANSACTION 
+			
+			DECLARE @Momento SMALLDATETIME = CURRENT_TIMESTAMP
+			
+			--Actualiza Posicion y vuelta rápida
+			UPDATE PilotosCarreras 
+			SET Posicion = @Posicion,
+				[Vuelta rapida] = @VueltaRapida
+			WHERE	[ID Piloto]= @IdPiloto AND
+					[Codigo Carrera]=@CodigoCarrera
+
+			--Actualiza la hora de fin de carrera
+			UPDATE Carreras
+			SET [Fecha y Hora Fin] = @Momento
+			WHERE @CodigoCarrera=Codigo
+
+		COMMIT 
+	END 
+
+GO
 --FUNCIONES ESCALARES
 
 --Nombre: AsignarCuota
@@ -250,6 +283,7 @@ RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FRO
 	)
 GO
 
+--PRUEBA
 SELECT * FROM Apuestas
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
@@ -268,32 +302,121 @@ SELECT * FROM Apuestas
 
 SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
-
 GO
+
+--Nombre: DeterminarGanador
+--Descripcion: Devuelve el resultado de una apuesta con ID especificado, 0 si no es ganador y 1 si es ganador.
+--Entradas: idApuesta, int
+--Salida: ganador, bit que indica 0 si no es ganador y 1 si es ganador.
+CREATE OR ALTER PROCEDURE DeterminarGanador @idApuesta INT,
+@ganador BIT OUTPUT
+AS
+BEGIN
+    SET @ganador = 0
+    DECLARE @tipo tinyint = (SELECT Tipo FROM Apuestas WHERE [ID Apuesta] = @idApuesta)
+    DECLARE @carrera INT = (SELECT [Codigo Carrera] FROM Apuestas AS A WHERE A.[ID Apuesta] = @idApuesta)
+	IF (@tipo = 1) -- Posicion de Piloto
+        BEGIN
+            IF EXISTS
+            (
+                SELECT * FROM Apuestas AS A
+                INNER JOIN PilotosCarreras AS PC
+                    ON A.[Codigo Carrera] = PC.[Codigo Carrera]
+                           AND A.[ID Piloto1] = PC.[ID Piloto]
+                WHERE A.[ID Apuesta] = @idApuesta
+                  AND A.Posicion = PC.Posicion
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+    ELSE IF (@tipo = 2) -- Vuelta rapida
+        BEGIN
+            IF EXISTS
+            (
+                SELECT MasRapido.Tiempo, A.[ID Piloto1]
+                FROM Apuestas AS A
+                INNER JOIN PilotosCarreras AS PC
+                        ON A.[Codigo Carrera] = PC.[Codigo Carrera]
+                            AND A.[ID Piloto1] = PC.[ID Piloto]
+                INNER JOIN
+                    (
+                        SELECT MIN(PC.[Vuelta rapida]) AS Tiempo
+                        FROM Apuestas AS A
+                                INNER JOIN PilotosCarreras AS PC ON A.[ID Piloto1] = PC.[ID Piloto]
+                        WHERE PC.[Codigo Carrera] = @carrera
+                    ) AS MasRapido ON PC.[Vuelta rapida] = MasRapido.Tiempo
+                WHERE A.[ID Apuesta] = @idApuesta
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+    ELSE IF (@tipo = 3) -- Podio
+        BEGIN
+            IF EXISTS
+            (
+                SELECT * FROM Apuestas AS A
+                INNER JOIN Carreras AS C
+                    ON A.[Codigo Carrera] = C.Codigo
+                INNER JOIN PilotosCarreras AS PC1
+                    ON C.Codigo = PC1.[Codigo Carrera]
+                       AND A.[ID Piloto1] = PC1.[ID Piloto]
+                INNER JOIN PilotosCarreras AS PC2
+                    ON C.Codigo = PC2.[Codigo Carrera]
+                       AND A.[ID Piloto2] = PC2.[ID Piloto]
+                INNER JOIN PilotosCarreras AS PC3
+                    ON C.Codigo = PC3.[Codigo Carrera]
+                       AND A.[ID Piloto3] = PC3.[ID Piloto]
+                WHERE A.[ID Apuesta] = @idApuesta
+                  AND PC1.Posicion BETWEEN 1 AND 3
+                  AND PC2.Posicion BETWEEN 1 AND 3
+                  AND PC3.Posicion BETWEEN 1 AND 3
+            )
+            BEGIN
+                SET @ganador = 1
+            END
+        END
+	RETURN @ganador
+END
+GO
+
 --Nombre: FinalizarCarrera
 --Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
 --Entrada: Codigo Carrera
 --Salida: Saldos actualizados
 
-CREATE OR ALTER PROCEDURE introducirDatosFinCarrera(
-	@IdPiloto SMALLINT
-	,@CodigoCarrera SMALLINT
-	,@Posicion TINYINT
-	,@Tiempo TIME
-	)
-	
-	AS BEGIN
-		BEGIN TRANSACTION
-			INSERT INTO PilotosCarreras VALUES (
-												@IdPiloto,
-												@CodigoCarrera,
-												@Posicion,
-												@Tiempo
-											)
-		COMMIT
-	END
+CREATE OR ALTER PROCEDURE FinalizarCarrera 
+	@CodigoCarrera SMALLINT
+AS BEGIN
+	BEGIN TRANSACTION
+		
+		DECLARE @IDApuesta SMALLINT --Variable en la que se va a almacenar el ID de las apuestas
+		DECLARE @IDUsuario SMALLINT
+		DECLARE @Importe SMALLMONEY
+		DECLARE @Cuota DECIMAL(4,2)
+		DECLARE @Momento SMALLDATETIME = CURRENT_TIMESTAMP
+		DECLARE @BitGanador BIT
+		DECLARE CApuestasCarrera CURSOR FOR
+			SELECT [ID Apuesta], [ID Usuario], Importe, Cuota FROM Apuestas
+			WHERE [Codigo Carrera]=@CodigoCarrera
 
-
-
-
-	GO
+		OPEN CApuestasCarrera
+		
+		--Recorremos las apuestas
+		FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			BEGIN TRANSACTION
+				EXECUTE DeterminarGanador @IDApuesta, @BitGanador OUTPUT
+				IF @BitGanador = 0
+					BEGIN
+						SET @Importe = dbo.CalcularPremio (@Importe, @Cuota) --¿¿¿Dara problemas???
+						EXECUTE ModificarSaldo @IDUsuario, @Importe, @Momento, 'Ingreso por acierto de apuesta'
+					END
+				FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+			COMMIT
+		END
+	COMMIT
+END
+GO
