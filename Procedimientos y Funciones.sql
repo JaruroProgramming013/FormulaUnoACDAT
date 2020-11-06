@@ -89,6 +89,39 @@ END
 
 GO
 
+--Nombre: introducirDatosFinCarrera
+--Descripcion:Introduce la posicion y la vuelta rapida de un piloto en una carrera
+--Entradas: id poiloto, codigo de la carrera, posicion del piloto y su vuelta rapida
+--Salidas: modificaciones en las tablas
+
+CREATE OR ALTER PROCEDURE introducirDatosFinCarrera( 
+	@IdPiloto SMALLINT 
+	,@CodigoCarrera SMALLINT 
+	,@Posicion TINYINT 
+	,@VueltaRapida TIME 
+	) 
+	 
+	AS BEGIN 
+		BEGIN TRANSACTION 
+			
+			DECLARE @Momento SMALLDATETIME = CURRENT_TIMESTAMP
+			
+			--Actualiza Posicion y vuelta rápida
+			UPDATE PilotosCarreras 
+			SET Posicion = @Posicion,
+				[Vuelta rapida] = @VueltaRapida
+			WHERE	[ID Piloto]= @IdPiloto AND
+					[Codigo Carrera]=@CodigoCarrera
+
+			--Actualiza la hora de fin de carrera
+			UPDATE Carreras
+			SET [Fecha y Hora Fin] = @Momento
+			WHERE @CodigoCarrera=Codigo
+
+		COMMIT 
+	END 
+
+GO
 --FUNCIONES ESCALARES
 
 --Nombre: AsignarCuota
@@ -250,6 +283,7 @@ RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FRO
 	)
 GO
 
+--PRUEBA
 SELECT * FROM Apuestas
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
@@ -268,30 +302,10 @@ SELECT * FROM Apuestas
 
 SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
-
-
---Nombre: FinalizarCarrera
---Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
---Entrada: Codigo Carrera
---Salida: Saldos actualizados
-
-CREATE OR ALTER PROCEDURE FinalizarCarrera 
-	@CodigoCarrera SMALLINT
-
-
-
-
---Nombre: FinalizarCarrera
---Descripci�n: 
---Entradas: 
---Salida:
-
-
 GO
 
-
 --Nombre: DeterminarGanador
---Descripci�n: Devuelve el resultado de una apuesta con ID especificado, 0 si no es ganador y 1 si es ganador.
+--Descripcion: Devuelve el resultado de una apuesta con ID especificado, 0 si no es ganador y 1 si es ganador.
 --Entradas: idApuesta, int
 --Salida: ganador, bit que indica 0 si no es ganador y 1 si es ganador.
 CREATE OR ALTER PROCEDURE DeterminarGanador @idApuesta INT,
@@ -301,7 +315,7 @@ BEGIN
     SET @ganador = 0
     DECLARE @tipo tinyint = (SELECT Tipo FROM Apuestas WHERE [ID Apuesta] = @idApuesta)
     DECLARE @carrera INT = (SELECT [Codigo Carrera] FROM Apuestas AS A WHERE A.[ID Apuesta] = @idApuesta)
-	IF (@tipo = 1) -- Posici�n de Piloto
+	IF (@tipo = 1) -- Posicion de Piloto
         BEGIN
             IF EXISTS
             (
@@ -316,7 +330,7 @@ BEGIN
                 SET @ganador = 1
             END
         END
-    ELSE IF (@tipo = 2) -- Vuelta r�pida
+    ELSE IF (@tipo = 2) -- Vuelta rapida
         BEGIN
             IF EXISTS
             (
@@ -364,5 +378,45 @@ BEGIN
             END
         END
 	RETURN @ganador
+END
+GO
+
+--Nombre: FinalizarCarrera
+--Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
+--Entrada: Codigo Carrera
+--Salida: Saldos actualizados
+
+CREATE OR ALTER PROCEDURE FinalizarCarrera 
+	@CodigoCarrera SMALLINT
+AS BEGIN
+	BEGIN TRANSACTION
+		
+		DECLARE @IDApuesta SMALLINT --Variable en la que se va a almacenar el ID de las apuestas
+		DECLARE @IDUsuario SMALLINT
+		DECLARE @Importe SMALLMONEY
+		DECLARE @Cuota DECIMAL(4,2)
+		DECLARE @Momento SMALLDATETIME = CURRENT_TIMESTAMP
+		DECLARE @BitGanador BIT
+		DECLARE CApuestasCarrera CURSOR FOR
+			SELECT [ID Apuesta], [ID Usuario], Importe, Cuota FROM Apuestas
+			WHERE [Codigo Carrera]=@CodigoCarrera
+
+		OPEN CApuestasCarrera
+		
+		--Recorremos las apuestas
+		FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			BEGIN TRANSACTION
+				EXECUTE DeterminarGanador @IDApuesta, @BitGanador OUTPUT
+				IF @BitGanador = 0
+					BEGIN
+						SET @Importe = dbo.CalcularPremio (@Importe, @Cuota) --¿¿¿Dara problemas???
+						EXECUTE ModificarSaldo @IDUsuario, @Importe, @Momento, 'Ingreso por acierto de apuesta'
+					END
+				FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+			COMMIT
+		END
+	COMMIT
 END
 GO

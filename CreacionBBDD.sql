@@ -33,8 +33,8 @@ CREATE TABLE Pilotos(
 CREATE TABLE Carreras (
     Codigo SMALLINT IDENTITY (1,1) NOT NULL CONSTRAINT PK_Carreras PRIMARY KEY 
 	,Circuito VARCHAR(20) NOT NULL
-	,[Fecha y Hora Inicio] DATETIME NOT NULL
-	,[Fecha y Hora Fin] DATETIME NULL
+	,[Fecha y Hora Inicio] SMALLDATETIME NOT NULL
+	,[Fecha y Hora Fin] SMALLDATETIME NULL
 	,[Num vueltas] TINYINT NOT NULL
 )
 

@@ -195,10 +195,13 @@ EXECUTE GrabarApuestas 7,3 , 2, 12, null, null, null, 7
 EXECUTE GrabarApuestas 11,3 , 2, 3, null, null, null, 9
 EXECUTE GrabarApuestas 8,2 , 2, 5, null, null, null, 2
 
+SELECT * FROM PilotosCarreras
 
-								
-EXECUTE IntroducirDatosFinCarrera 1, 1, TIMEFROMPARTS( 0,1,20,34,3), 3
-EXECUTE IntroducirDatosFinCarrera 2, 1, TIMEFROMPARTS( 0,1,40,45,3), 2
+DECLARE @Tiempo TIME
+SELECT @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
+EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
+SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
+EXECUTE IntroducirDatosFinCarrera 2, 1,@Tiempo , 2
 EXECUTE IntroducirDatosFinCarrera 3, 1, TIMEFROMPARTS( 0,1,32,65,3), 1
 EXECUTE IntroducirDatosFinCarrera 4, 1, TIMEFROMPARTS( 0,1,34,76,3), 5
 EXECUTE IntroducirDatosFinCarrera 5, 1, TIMEFROMPARTS( 0,1,50,65,3), 6
