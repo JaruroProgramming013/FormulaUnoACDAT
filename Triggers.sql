@@ -9,18 +9,26 @@ AS
 	ROLLBACK
 GO
 
---No permite realizar más apuestas si se supera el limite de 10.000 euros por tipo de apuesta
+--No permite realizar mï¿½s apuestas si se supera el limite de 10.000 euros por tipo de apuesta
 CREATE OR ALTER TRIGGER MaximoAlcanzado ON Apuestas
 AFTER INSERT
 AS BEGIN
-
 	DECLARE @TotalApostado SMALLMONEY
 	DECLARE @CodigoCarrera SMALLINT
 	DECLARE @IdPiloto1 SMALLINT
 	DECLARE @IdPiloto2 SMALLINT
 	DECLARE @IdPiloto3 SMALLINT
-	DECLARE @Posicion TINYINT
 	DECLARE @Tipo SMALLINT
+	DECLARE @Importe SMALLMONEY
+	DECLARE @Cuota DECIMAL(4,2)
+
+	SELECT @CodigoCarrera = [Codigo Carrera] FROM inserted
+	SELECT @IdPiloto1 = [ID Piloto1] FROM inserted
+	SELECT @IdPiloto2 = [ID Piloto2] FROM inserted
+	SELECT @IdPiloto3 = [ID Piloto3] FROM inserted
+	SELECT @Tipo = Tipo FROM inserted
+	SELECT @Importe = Importe FROM inserted
+	SELECT @Cuota = Cuota FROM inserted
 
 	SELECT @CodigoCarrera = [Codigo Carrera] FROM inserted
 	SELECT @IdPiloto1 = [ID Piloto1] FROM inserted
@@ -54,13 +62,4 @@ AS BEGIN
                16, -- Severity.
                1 -- State.
                )
-END
-
-GO
---Este trigger evita que corran más de 24 pilotos en una carrera
-CREATE OR ALTER TRIGGER PilotosMaximos ON PilotosCarreras
-AFTER INSERT
-AS BEGIN
-	DECLARE 
-    IF ( )
 END
