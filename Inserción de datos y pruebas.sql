@@ -201,52 +201,95 @@ DECLARE @Tiempo TIME
 SELECT @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
 EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
 SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
-EXECUTE IntroducirDatosFinCarrera 2, 1,@Tiempo , 2
-EXECUTE IntroducirDatosFinCarrera 3, 1, TIMEFROMPARTS( 0,1,32,65,3), 1
-EXECUTE IntroducirDatosFinCarrera 4, 1, TIMEFROMPARTS( 0,1,34,76,3), 5
-EXECUTE IntroducirDatosFinCarrera 5, 1, TIMEFROMPARTS( 0,1,50,65,3), 6
-EXECUTE IntroducirDatosFinCarrera 6, 1, TIMEFROMPARTS( 0,1,12,24,3), 7
-EXECUTE IntroducirDatosFinCarrera 7, 1, TIMEFROMPARTS( 0,1,17,37,3), 9
-EXECUTE IntroducirDatosFinCarrera 8, 1, TIMEFROMPARTS( 0,1,18,13,3), 8
-EXECUTE IntroducirDatosFinCarrera 9, 1, TIMEFROMPARTS( 0,1,40,63,3), 4
-EXECUTE IntroducirDatosFinCarrera 10, 1, TIMEFROMPARTS( 0,1,1,34,3), 10
-EXECUTE IntroducirDatosFinCarrera 11, 1, TIMEFROMPARTS( 0,1,41,45,3), 13
-EXECUTE IntroducirDatosFinCarrera 12, 1, TIMEFROMPARTS( 0,1,51,76,3), 15
-EXECUTE IntroducirDatosFinCarrera 13, 1, TIMEFROMPARTS( 0,1,33,76,3), 12
-EXECUTE IntroducirDatosFinCarrera 14, 1, TIMEFROMPARTS( 0,1,43,56,3), 14
-EXECUTE IntroducirDatosFinCarrera 15, 1, TIMEFROMPARTS( 0,1,13,33,3), 11
+EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
+SELECT @TIEMPO = TIMEFROMPARTS( 0,1,32,65,3)
+EXECUTE IntroducirDatosFinCarrera 3, 1, @Tiempo, 1
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,34,76,3)
+EXECUTE IntroducirDatosFinCarrera 4, 1, @Tiempo, 5
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,65,3)
+EXECUTE IntroducirDatosFinCarrera 5, 1, @Tiempo, 6
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,12,24,3)
+EXECUTE IntroducirDatosFinCarrera 6, 1, @Tiempo, 7
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,17,37,3)
+EXECUTE IntroducirDatosFinCarrera 7, 1, @Tiempo, 9
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,18,13,3)
+EXECUTE IntroducirDatosFinCarrera 8, 1, @Tiempo, 8
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,40,63,3)
+EXECUTE IntroducirDatosFinCarrera 9, 1, @Tiempo, 4
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,1,34,3)
+EXECUTE IntroducirDatosFinCarrera 10, 1, @Tiempo, 10
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,41,45,3)
+EXECUTE IntroducirDatosFinCarrera 11, 1, @Tiempo, 13
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,51,76,3)
+EXECUTE IntroducirDatosFinCarrera 12, 1, @Tiempo, 15
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
+EXECUTE IntroducirDatosFinCarrera 13, 1, @Tiempo, 12
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,43,56,3)
+EXECUTE IntroducirDatosFinCarrera 14, 1, @Tiempo, 14
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
+EXECUTE IntroducirDatosFinCarrera 15, 1, @Tiempo, 11
 
-EXECUTE IntroducirDatosFinCarrera 1, 2, TIMEFROMPARTS( 0,1,24,34,3), 5
-EXECUTE IntroducirDatosFinCarrera 2, 2, TIMEFROMPARTS( 0,1,50,45,3), 4
-EXECUTE IntroducirDatosFinCarrera 3, 2, TIMEFROMPARTS( 0,1,32,65,3), 15
-EXECUTE IntroducirDatosFinCarrera 4, 2, TIMEFROMPARTS( 0,1,4,76,3), 12
-EXECUTE IntroducirDatosFinCarrera 5, 2, TIMEFROMPARTS( 0,1,52,65,3), 1
-EXECUTE IntroducirDatosFinCarrera 6, 2, TIMEFROMPARTS( 0,1,32,24,3),13
-EXECUTE IntroducirDatosFinCarrera 7, 2, TIMEFROMPARTS( 0,1,15,37,3), 7
-EXECUTE IntroducirDatosFinCarrera 8, 2, TIMEFROMPARTS( 0,1,58,13,3), 2
-EXECUTE IntroducirDatosFinCarrera 9, 2, TIMEFROMPARTS( 0,1,44,63,3), 10
-EXECUTE IntroducirDatosFinCarrera 10, 2, TIMEFROMPARTS( 0,1,13,34,3), 11
-EXECUTE IntroducirDatosFinCarrera 11, 2, TIMEFROMPARTS( 0,1,4,45,3), 3
-EXECUTE IntroducirDatosFinCarrera 12, 2, TIMEFROMPARTS( 0,1,5,76,3), 9
-EXECUTE IntroducirDatosFinCarrera 13, 2, TIMEFROMPARTS( 0,1,33,76,3), 14
-EXECUTE IntroducirDatosFinCarrera 14, 2, TIMEFROMPARTS( 0,1,3,56,3), 8
-EXECUTE IntroducirDatosFinCarrera 15, 2, TIMEFROMPARTS( 0,1,13,33,3), 6
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,24,34,3)
+EXECUTE IntroducirDatosFinCarrera 1, 2, @Tiempo, 5
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,45,3)
+EXECUTE IntroducirDatosFinCarrera 2, 2, @Tiempo, 4
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,65,3)
+EXECUTE IntroducirDatosFinCarrera 3, 2, @Tiempo, 15
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,76,3)
+EXECUTE IntroducirDatosFinCarrera 4, 2, @Tiempo, 12
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,52,65,3)
+EXECUTE IntroducirDatosFinCarrera 5, 2, @Tiempo, 1
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,24,3)
+EXECUTE IntroducirDatosFinCarrera 6, 2, @Tiempo,13
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,15,37,3)
+EXECUTE IntroducirDatosFinCarrera 7, 2, @Tiempo, 7
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,58,13,3)
+EXECUTE IntroducirDatosFinCarrera 8, 2, @Tiempo, 2
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,44,63,3)
+EXECUTE IntroducirDatosFinCarrera 9, 2, @Tiempo, 10
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,34,3)
+EXECUTE IntroducirDatosFinCarrera 10, 2, @Tiempo, 11
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,45,3)
+EXECUTE IntroducirDatosFinCarrera 11, 2, @Tiempo, 3
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,5,76,3)
+EXECUTE IntroducirDatosFinCarrera 12, 2, @Tiempo, 9
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
+EXECUTE IntroducirDatosFinCarrera 13, 2, @Tiempo, 14
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
+EXECUTE IntroducirDatosFinCarrera 14, 2, @Tiempo, 8
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
+EXECUTE IntroducirDatosFinCarrera 15, 2, @Tiempo, 6
 
-EXECUTE IntroducirDatosFinCarrera 1, 3, TIMEFROMPARTS( 0,1,24,34,3), 13
-EXECUTE IntroducirDatosFinCarrera 2, 3, TIMEFROMPARTS( 0,1,50,45,3),9
-EXECUTE IntroducirDatosFinCarrera 3, 3, TIMEFROMPARTS( 0,1,32,65,3), 12
-EXECUTE IntroducirDatosFinCarrera 4, 3, TIMEFROMPARTS( 0,1,4,76,3), 3
-EXECUTE IntroducirDatosFinCarrera 5, 3, TIMEFROMPARTS( 0,1,52,65,3), 8
-EXECUTE IntroducirDatosFinCarrera 6, 3, TIMEFROMPARTS( 0,1,32,24,3),10
-EXECUTE IntroducirDatosFinCarrera 7, 3, TIMEFROMPARTS( 0,1,15,37,3), 15
-EXECUTE IntroducirDatosFinCarrera 8, 3, TIMEFROMPARTS( 0,1,58,13,3), 2
-EXECUTE IntroducirDatosFinCarrera 9, 3, TIMEFROMPARTS( 0,1,44,63,3), 11
-EXECUTE IntroducirDatosFinCarrera 10, 3, TIMEFROMPARTS( 0,1,13,34,3), 4
-EXECUTE IntroducirDatosFinCarrera 11, 3, TIMEFROMPARTS( 0,1,4,45,3), 5
-EXECUTE IntroducirDatosFinCarrera 12, 3, TIMEFROMPARTS( 0,1,5,76,3), 1
-EXECUTE IntroducirDatosFinCarrera 13, 3, TIMEFROMPARTS( 0,1,33,76,3), 7
-EXECUTE IntroducirDatosFinCarrera 14, 3, TIMEFROMPARTS( 0,1,3,56,3), 6
-EXECUTE IntroducirDatosFinCarrera 15, 3, TIMEFROMPARTS( 0,1,13,33,3), 14
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,24,34,3)
+EXECUTE IntroducirDatosFinCarrera 1, 3, @Tiempo, 13
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,45,3)
+EXECUTE IntroducirDatosFinCarrera 2, 3, @Tiempo,9
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,65,3)
+EXECUTE IntroducirDatosFinCarrera 3, 3, @Tiempo, 12
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,76,3)
+EXECUTE IntroducirDatosFinCarrera 4, 3, @Tiempo, 3
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,52,65,3)
+EXECUTE IntroducirDatosFinCarrera 5, 3, @Tiempo, 8
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,24,3)
+EXECUTE IntroducirDatosFinCarrera 6, 3, @Tiempo,10
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,15,37,3)
+EXECUTE IntroducirDatosFinCarrera 7, 3, @Tiempo, 15
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,58,13,3)
+EXECUTE IntroducirDatosFinCarrera 8, 3, @Tiempo, 2
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,44,63,3)
+EXECUTE IntroducirDatosFinCarrera 9, 3, @Tiempo, 11
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,34,3)
+EXECUTE IntroducirDatosFinCarrera 10, 3, @Tiempo, 4
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,45,3)
+EXECUTE IntroducirDatosFinCarrera 11, 3, @Tiempo, 5
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,5,76,3)
+EXECUTE IntroducirDatosFinCarrera 12, 3, @Tiempo, 1
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
+EXECUTE IntroducirDatosFinCarrera 13, 3, @Tiempo, 7
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
+EXECUTE IntroducirDatosFinCarrera 14, 3, @Tiempo, 6
+SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
+EXECUTE IntroducirDatosFinCarrera 15, 3, @Tiempo, 14
 
 
 SELECT * FROM Pilotos
