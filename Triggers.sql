@@ -5,8 +5,10 @@ GO
 CREATE OR ALTER TRIGGER BloquearApuesta ON Apuestas
 INSTEAD OF UPDATE, DELETE
 AS
-	THROW 51000, 'La apuesta no se puede modificar ni borrar.', 1
-	ROLLBACK
+	RAISERROR ('La apuesta no se puede modificar ni borrar.', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               )
 GO
 
 --No permite realizar m�s apuestas si se supera el limite de 10.000 euros por tipo de apuesta
@@ -21,6 +23,7 @@ AS BEGIN
 	DECLARE @Tipo SMALLINT
 	DECLARE @Importe SMALLMONEY
 	DECLARE @Cuota DECIMAL(4,2)
+    DECLARE @Posicion TINYINT
 
 	SELECT @CodigoCarrera = [Codigo Carrera] FROM inserted
 	SELECT @IdPiloto1 = [ID Piloto1] FROM inserted
@@ -40,8 +43,10 @@ AS BEGIN
 	SELECT @TotalApostado = SUM([Ganancia]) FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3,@Posicion, @Tipo)
 
 	IF @TotalApostado > 10000
-		THROW 51001, 'Se ha superado el limite de apuestas a este piloto.', 1
-	ROLLBACK
+	RAISERROR ('Se ha superado el limite de apuestas a este piloto.', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               )
 
 END
 GO
