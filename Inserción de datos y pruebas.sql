@@ -173,35 +173,50 @@ select * from Transacciones
 
 GO
 
-					
-EXECUTE GrabarApuestas 1, 1 , 1, 1, null, null, 3, 10
-EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 5
-EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 4
-EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
-EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 7
-EXECUTE GrabarApuestas 7, 1 , 3, 4, 5, 1, null, 5
-EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 4
-EXECUTE GrabarApuestas 9, 2 , 1, 8, null, null, 6, 3
-EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 24
-EXECUTE GrabarApuestas 10, 3, 1, 2, null, null, 4, 30
-EXECUTE GrabarApuestas 11, 2 , 3, 4, 3, 2, null, 23
-EXECUTE GrabarApuestas 12, 1 , 1, 7, null, null, 3, 12
-EXECUTE GrabarApuestas 7, 3, 1, 9, null, null, 1, 18
-EXECUTE GrabarApuestas 14, 2 , 3, 4, 1, 3, null, 4
-EXECUTE GrabarApuestas 16, 2 , 2, 6, null, null, null, 2
-EXECUTE GrabarApuestas 11,1 , 2, 10, null, null, null, 5
-EXECUTE GrabarApuestas 1,2 , 2, 4, null, null, null, 6
-EXECUTE GrabarApuestas 7,3 , 2, 12, null, null, null, 7
-EXECUTE GrabarApuestas 11,3 , 2, 3, null, null, null, 9
-EXECUTE GrabarApuestas 8,2 , 2, 5, null, null, null, 2
+DECLARE @Resultado DECIMAL (4,2)
+DECLARE @Tiempo SMALLDATETIME
+SET @Tiempo = CURRENT_TIMESTAMP
+SET @Resultado = dbo.AsignarCuota(1, 1, NULL, NULL, 1, @Tiempo)
 
-SELECT * FROM PilotosCarreras
+EXECUTE GrabarApuestas 2, 1 , 1, 1, null, null, 3, 4
+EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 20
+EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 1
+EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
+EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 45
+EXECUTE GrabarApuestas 10, 1 , 3, 4, 5, 1, 5,  null, 21
+EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 17
+EXECUTE GrabarApuestas 10, 2 , 1, 8, null, null, 6, 3
+EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 12
+EXECUTE GrabarApuestas 5, 3, 1, 2, null, null, 4, 30
+EXECUTE GrabarApuestas 8, 2 , 3, 4, 3, 2, null, 23
+EXECUTE GrabarApuestas 2, 1 , 1, 7, null, null, 3, 12
+EXECUTE GrabarApuestas 8, 3, 1, 9, null, null, 1, 18
+EXECUTE GrabarApuestas 4, 2 , 3, 4, 1, 3, null, 4
+EXECUTE GrabarApuestas 2, 2 , 2, 6, null, null, 4, 2
+EXECUTE GrabarApuestas 2,1 , 2, 10, null, null, 2, 5
+EXECUTE GrabarApuestas 1,2 , 2, 4, null, null, 3, 6
+EXECUTE GrabarApuestas 3,3 , 2, 12, null, null, 4, 7
+EXECUTE GrabarApuestas 3, 3 , 2, 3, null, null, 6, 9
+EXECUTE GrabarApuestas 4 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 1 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 2 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 3 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 4 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 5 ,2 , 2, 5, null, null, 1, 2
+EXECUTE GrabarApuestas 5 ,2 , 1, 1, 1, null, 3, 5
+EXECUTE GrabarApuestas 3 ,1 , 1, 1, null, null, 9, 5
+
+SELECT * FROM Apuestas
+SELECT * FROM Usuarios
+select * from Carreras
+select * from Pilotos
+GO
 
 DECLARE @Tiempo TIME
-SELECT @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
-EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
-SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
-EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
+--SET @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
+--EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
+--SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
+--EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
 SELECT @TIEMPO = TIMEFROMPARTS( 0,1,32,65,3)
 EXECUTE IntroducirDatosFinCarrera 3, 1, @Tiempo, 1
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,34,76,3)
@@ -284,13 +299,35 @@ SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,45,3)
 EXECUTE IntroducirDatosFinCarrera 11, 3, @Tiempo, 5
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,5,76,3)
 EXECUTE IntroducirDatosFinCarrera 12, 3, @Tiempo, 1
-SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
+SET @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
 EXECUTE IntroducirDatosFinCarrera 13, 3, @Tiempo, 7
-SELECT @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
+SET @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
 EXECUTE IntroducirDatosFinCarrera 14, 3, @Tiempo, 6
-SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
+SET @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
 EXECUTE IntroducirDatosFinCarrera 15, 3, @Tiempo, 14
 
 
 SELECT * FROM Pilotos
 select * from Transacciones
+select * from Apuestas
+select * from PilotosCarreras
+order by [Codigo Carrera],Posicion
+
+GO
+
+
+EXECUTE GrabarApuestas 3 ,1 , 3, 8, 2, 3, null, 5
+go
+
+DECLARE @BIT BIT
+EXECUTE  @BIT = DeterminarGanador 52, @BIT
+PRINT @BIT
+
+GO
+
+SELECT * FROM Usuarios
+SELECT * FROM Transacciones
+
+EXECUTE FinalizarCarrera 1
+
+GO

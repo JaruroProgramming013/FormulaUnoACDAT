@@ -97,8 +97,8 @@ GO
 CREATE OR ALTER PROCEDURE introducirDatosFinCarrera( 
 	@IdPiloto SMALLINT 
 	,@CodigoCarrera SMALLINT 
-	,@Posicion TINYINT 
 	,@VueltaRapida TIME 
+	,@Posicion TINYINT 
 	) 
 	 
 	AS BEGIN 
@@ -149,7 +149,7 @@ BEGIN
 	--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
 	SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
 
-	RETURN @Cuota*20
+	RETURN @Cuota*20+1
 END
 
 GO
@@ -343,7 +343,8 @@ BEGIN
                     (
                         SELECT MIN(PC.[Vuelta rapida]) AS Tiempo
                         FROM Apuestas AS A
-                                INNER JOIN PilotosCarreras AS PC ON A.[ID Piloto1] = PC.[ID Piloto]
+                        INNER JOIN PilotosCarreras AS PC 
+							ON A.[ID Piloto1] = PC.[ID Piloto]
                         WHERE PC.[Codigo Carrera] = @carrera
                     ) AS MasRapido ON PC.[Vuelta rapida] = MasRapido.Tiempo
                 WHERE A.[ID Apuesta] = @idApuesta
@@ -391,7 +392,7 @@ CREATE OR ALTER PROCEDURE FinalizarCarrera
 AS BEGIN
 	BEGIN TRANSACTION
 		
-		DECLARE @IDApuesta SMALLINT --Variable en la que se va a almacenar el ID de las apuestas
+		DECLARE @IDApuesta SMALLINT --Variables en las que se va a almacenar el ID de las apuestas
 		DECLARE @IDUsuario SMALLINT
 		DECLARE @Importe SMALLMONEY
 		DECLARE @Cuota DECIMAL(4,2)
@@ -404,19 +405,27 @@ AS BEGIN
 		OPEN CApuestasCarrera
 		
 		--Recorremos las apuestas
-		FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+		FETCH NEXT FROM CApuestasCarrera INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			BEGIN TRANSACTION
 				EXECUTE DeterminarGanador @IDApuesta, @BitGanador OUTPUT
-				IF @BitGanador = 0
+				IF @BitGanador = 1
 					BEGIN
 						SET @Importe = dbo.CalcularPremio (@Importe, @Cuota) --¿¿¿Dara problemas???
 						EXECUTE ModificarSaldo @IDUsuario, @Importe, @Momento, 'Ingreso por acierto de apuesta'
 					END
-				FETCH NEXT FROM CApuestas INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+				FETCH NEXT FROM CApuestasCarrera INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
 			COMMIT
 		END
+	CLOSE CApuestasCarrera
+	DEALLOCATE CApuestasCarrera
 	COMMIT
 END
 GO
+
+
+DECLARE @Importe SMALLMONEY = 8
+						print @Importe
+						SET @Importe = dbo.CalcularPremio (@Importe, 3) --¿¿¿Dara problemas???
+						print @Importe

@@ -29,14 +29,16 @@ AS BEGIN
 	SELECT @Posicion = Posicion FROM inserted
 	SELECT @Tipo = Tipo FROM inserted
 
-	SELECT @TotalApostado = SUM([Ganancia]) FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3,@Posicion, @Tipo)
-
+	SELECT @TotalApostado = SUM(ISNULL([Ganancia],0)) FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3,@Posicion, @Tipo)
+	
 	IF @TotalApostado > 10000
+		BEGIN
 		THROW 51001, 'Se ha superado el limite de apuestas a este piloto.', 1
-	ROLLBACK
-
+		ROLLBACK
+		END
 END
 GO
+
 
 --Este trigger evita que se inserten numeros de pilotos duplicados en una misma carrera
 
@@ -57,10 +59,20 @@ AS BEGIN
 END
 
 GO
---Este trigger evita que corran más de 24 pilotos en una carrera
-CREATE OR ALTER TRIGGER PilotosMaximos ON PilotosCarreras
-AFTER INSERT
-AS BEGIN
-	DECLARE 
-    IF ( )
+ 
+--Este trigger evita que en una carrera se introduzcan mas de 24 pilotos 
+ 
+CREATE OR ALTER TRIGGER LimiteCarrera ON PilotosCarreras 
+AFTER INSERT 
+AS BEGIN 
+    IF( 
+        SELECT COUNT(PC.[ID Piloto]) 
+        FROM PilotosCarreras PC 
+        INNER JOIN inserted i ON PC.[Codigo Carrera]=i.[Codigo Carrera] 
+        GROUP BY PC.[Codigo Carrera] 
+    ) >= 24 
+    RAISERROR ('Limite de pilotos alcanzado.', -- Message text. 
+               16, -- Severity. 
+               1 -- State. 
+               ) 
 END
