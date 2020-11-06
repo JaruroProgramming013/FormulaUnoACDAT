@@ -63,3 +63,21 @@ AS BEGIN
                1 -- State.
                )
 END
+GO
+
+--Este trigger evita que en una carrera se introduzcan mas de 24 pilotos
+
+CREATE OR ALTER TRIGGER LimiteCarrera ON PilotosCarreras
+AFTER INSERT
+AS BEGIN
+    IF(
+        SELECT COUNT(PC.[ID Piloto])
+        FROM PilotosCarreras PC
+        INNER JOIN inserted i ON PC.[Codigo Carrera]=i.[Codigo Carrera]
+        GROUP BY PC.[Codigo Carrera]
+    ) >= 24
+    RAISERROR ('Limite de pilotos alcanzado.', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               )
+END
