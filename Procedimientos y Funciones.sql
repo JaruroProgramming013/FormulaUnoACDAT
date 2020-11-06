@@ -207,7 +207,7 @@ GO
 
 CREATE OR ALTER PROCEDURE GrabarApuestas
 	@IdUsuario SMALLINT,
-	@IdCarrera SMALLINT,
+	@CodigoCarrera SMALLINT,
 	@TipoApuesta TINYINT,
 	@Piloto1 TINYINT,
 	@Piloto2 TINYINT = NULL,
@@ -221,13 +221,13 @@ AS BEGIN
 		SET @Momento = CURRENT_TIMESTAMP
 
 		INSERT INTO Apuestas VALUES (	@IdUsuario,
-										@IdCarrera,
+										@CodigoCarrera,
 										@Piloto1, @Piloto2, @Piloto3,
 										@Posicion,
 										@TipoApuesta,
 										@Momento,
 										@Importe,
-										dbo.AsignarCuota(@IdCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
+										dbo.AsignarCuota(@CodigoCarrera, @Piloto1, @Piloto2, @Piloto3, @TipoApuesta, @Momento))
 
 		SET @Importe=-@Importe --La funcion ModificarSaldo suma el importe al saldo, cuando se graba una apuesta queremos disminuir
 
@@ -235,6 +235,67 @@ AS BEGIN
 
 	COMMIT
 END
+
+GO
+
+--Nombre: ApuestaTipo1
+--Descripciom: toma los parametros de entrada para realizar una apuesta de tipo uno (Acertar la posicion de un piloto) y llama al metodo 
+--				grabar apuesta
+--Entrada: ID usuaraio, codigo de carrera, id del piloto, posicion del piloto e importe
+--Salida: cambios en las tablas apuesta, usuario y transaccion
+
+CREATE OR ALTER PROCEDURE ApuestaTipo1 
+	@IdUsuario SMALLINT,
+	@CodigoCarrera SMALLINT,
+	@Piloto1 TINYINT,
+	@Posicion TINYINT,
+	@Importe SMALLMONEY
+AS BEGIN
+	BEGIN TRANSACTION
+		EXECUTE GrabarApuestas @IdUsuario, @CodigoCarrera , 1, @Piloto1, null, null, @Posicion, @Importe
+	COMMIT
+END
+
+GO
+
+--Nombre: ApuestaTipo2
+--Descripciom: toma los parametros de entrada para realizar una apuesta de tipo dos (Acertar piloto que va a tener la vuelta más rápida 
+--				de la carrera) y llama al metodo grabar apuesta
+--Entrada: ID usuaraio, codigo de carrera, id del piloto e importe
+--Salida: cambios en las tablas apuesta, usuario y transaccion
+
+CREATE OR ALTER PROCEDURE ApuestaTipo2
+	@IdUsuario SMALLINT,
+	@CodigoCarrera SMALLINT,
+	@Piloto1 TINYINT,
+	@Importe SMALLMONEY
+AS BEGIN
+	BEGIN TRANSACTION
+		EXECUTE GrabarApuestas @IdUsuario, @CodigoCarrera , 2, @Piloto1, null, null, null, @Importe
+	COMMIT
+END
+
+GO
+
+--Nombre: ApuestaTipo3
+--Descripciom: toma los parametros de entrada para realizar una apuesta de tipo tres (Acertar los tres primeros pilotos de una carrera) 
+--				y llama al metodo grabar apuesta
+--Entrada: ID usuaraio, codigo de carrera, id de los piloto tres pilotos e importe
+--Salida: cambios en las tablas apuesta, usuario y transaccion
+
+CREATE OR ALTER PROCEDURE ApuestaTipo3
+	@IdUsuario SMALLINT,
+	@CodigoCarrera SMALLINT,
+	@Piloto1 TINYINT,
+	@Piloto2 TINYINT,
+	@Piloto3 TINYINT,
+	@Importe SMALLMONEY
+AS BEGIN
+	BEGIN TRANSACTION
+		EXECUTE GrabarApuestas @IdUsuario, @CodigoCarrera , 3, @Piloto1, @Piloto2, @Piloto3, null, @Importe
+	COMMIT
+END
+
 GO
 
 --Nombre: IngresarRetirarDinero
@@ -281,26 +342,6 @@ RETURN(	SELECT [ID Usuario], dbo.CalcularPremio(Importe,Cuota) AS [Ganancia] FRO
 				ISNULL(Posicion,0)=ISNULL(@Posicion,0) AND
 				Tipo=@TipoApuesta
 	)
-GO
-
---PRUEBA
-SELECT * FROM Apuestas
-	DECLARE @TotalApostado SMALLMONEY
-	DECLARE @CodigoCarrera SMALLINT
-	DECLARE @IdPiloto1 SMALLINT
-	DECLARE @IdPiloto2 SMALLINT
-	DECLARE @IdPiloto3 SMALLINT
-	DECLARE @Posicion TINYINT
-	DECLARE @Tipo SMALLINT
-
-	SET @CodigoCarrera = 1
-	SET @IdPiloto1 = 1
-	SET @IdPiloto2 = NULL
-	SET @IdPiloto3 = NULL
-	SET @Posicion = 3
-	SET @Tipo = 1
-
-SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
 
 GO
 
@@ -423,9 +464,3 @@ AS BEGIN
 	COMMIT
 END
 GO
-
-
-DECLARE @Importe SMALLMONEY = 8
-						print @Importe
-						SET @Importe = dbo.CalcularPremio (@Importe, 3) --¿¿¿Dara problemas???
-						print @Importe

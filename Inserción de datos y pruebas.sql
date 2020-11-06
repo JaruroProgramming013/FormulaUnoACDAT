@@ -1,5 +1,6 @@
---INSERCI�N DE DATOS
 USE ApuestasF1
+
+--INSERCION DE DATOS
 
 GO
 EXECUTE InscribirUsuario 'Jose', 'joselito@gmail.com', 'joselerelere'
@@ -7,19 +8,18 @@ EXECUTE InscribirUsuario 'Javi', 'javieruste@gmail.com', 'javieperoconduste'
 EXECUTE InscribirUsuario 'George', 'sadouski@gmail.com', 'jorgeelcurioso'
 EXECUTE InscribirUsuario 'Josema', 'xemita95@gmail.com', 'matador'
 EXECUTE InscribirUsuario 'Leo', 'ElLeo@gmail.com', 'soyprofe'
-EXECUTE InscribirUsuario 'Companhero1', 'compa�ero1@gmail.com', 'compa1'
-EXECUTE InscribirUsuario 'Companhero2', 'compa�ero2@gmail.com', 'compa2'
-EXECUTE InscribirUsuario 'Companhero3', 'compa�ero3@gmail.com', 'compa3'
-EXECUTE InscribirUsuario 'Companhero4', 'compa�ero4@gmail.com', 'compa4'
-EXECUTE InscribirUsuario 'Companhero5', 'compa�ero5@gmail.com', 'compa5'
-EXECUTE InscribirUsuario 'Companhero6', 'compa�ero6@gmail.com', 'compa6'
-EXECUTE InscribirUsuario 'Companhero7', 'compa�ero7@gmail.com', 'compa7'
-EXECUTE InscribirUsuario 'Companhero8', 'compa�ero8@gmail.com', 'compa8'
-EXECUTE InscribirUsuario 'Companhero9', 'compa�ero9@gmail.com', 'compa9'
-EXECUTE InscribirUsuario 'Companhero10', 'compa�ero10@gmail.com', 'compa10'
-EXECUTE InscribirUsuario 'Companhero11', 'compa�ero11@gmail.com', 'compa11'
+EXECUTE InscribirUsuario 'Companhero1', 'companhero1@gmail.com', 'compa1'
+EXECUTE InscribirUsuario 'Companhero2', 'companhero2@gmail.com', 'compa2'
+EXECUTE InscribirUsuario 'Companhero3', 'companhero3@gmail.com', 'compa3'
+EXECUTE InscribirUsuario 'Companhero4', 'companhero4@gmail.com', 'compa4'
+EXECUTE InscribirUsuario 'Companhero5', 'companhero5@gmail.com', 'compa5'
+EXECUTE InscribirUsuario 'Companhero6', 'companhero6@gmail.com', 'compa6'
+EXECUTE InscribirUsuario 'Companhero7', 'companhero7@gmail.com', 'compa7'
+EXECUTE InscribirUsuario 'Companhero8', 'companhero8@gmail.com', 'compa8'
+EXECUTE InscribirUsuario 'Companhero9', 'companhero9@gmail.com', 'compa9'
+EXECUTE InscribirUsuario 'Companhero10', 'companhero10@gmail.com', 'compa10'
+EXECUTE InscribirUsuario 'Companhero11', 'companhero11@gmail.com', 'compa11'
 
---select * from Usuarios
 
 GO
 
@@ -39,7 +39,6 @@ EXECUTE InsertarPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
 EXECUTE InsertarPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
 EXECUTE InsertarPiloto 55, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
 
---select * from Pilotos
 
 GO
 
@@ -61,8 +60,6 @@ SET @Datetime = DATETIMEFROMPARTS(2021, 8, 24, 18, 0, 0, 0)
 EXECUTE AnhadirCarrera 'SaoPaulo', @Datetime, 58
 SET @Datetime = DATETIMEFROMPARTS(2021, 9, 29, 7, 0, 0, 0)
 EXECUTE AnhadirCarrera 'Indianapolis', @Datetime, 69
-
---select * from Carreras
 
 GO
 
@@ -109,11 +106,8 @@ EXECUTE InscribirPilotoCarrera 13,3
 EXECUTE InscribirPilotoCarrera 14,3
 EXECUTE InscribirPilotoCarrera 15,3
 
-
-
-SELECT * FROM PilotosCarreras
-
 GO
+
 DECLARE @Ahora DATETIME
 SET @Ahora = CURRENT_TIMESTAMP
 EXECUTE GenerarTransaccion 1, @Ahora, 1, 'Transaccion de prueba'
@@ -126,8 +120,6 @@ EXECUTE GenerarTransaccion 1, @Ahora, 10, 'Transaccion de prueba'
 EXECUTE GenerarTransaccion 1, @Ahora, 100, 'Transaccion de prueba'
 EXECUTE GenerarTransaccion 1, @Ahora, -80, 'Transaccion de prueba'
 EXECUTE GenerarTransaccion 1, @Ahora, -1, 'Transaccion de prueba'
-
-SELECT * FROM TRANSACCIONES
 
 GO
 
@@ -153,6 +145,8 @@ PRINT @Ganado
 
 GO
 
+--PRUEBA RESTO DE PROCEDIMIENTOS
+
 DECLARE @Tiempo SMALLDATETIME
 SET @Tiempo = CURRENT_TIMESTAMP
 EXECUTE ModificarSaldo 1, 100, @Tiempo, 'Prueba Ingreso de 100 euros en usuario 1'
@@ -167,23 +161,16 @@ EXECUTE ModificarSaldo 8, 43, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, 36, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, 42, @Tiempo, 'Pruebas en usuario 8'
 EXECUTE ModificarSaldo 8, -23, @Tiempo, 'Pruebas en usuario 8'
---EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de m�s dinero en exceso
-select * from Usuarios
-select * from Transacciones
+--EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de dinero en exceso
 
 GO
-
-DECLARE @Resultado DECIMAL (4,2)
-DECLARE @Tiempo SMALLDATETIME
-SET @Tiempo = CURRENT_TIMESTAMP
-SET @Resultado = dbo.AsignarCuota(1, 1, NULL, NULL, 1, @Tiempo)
 
 EXECUTE GrabarApuestas 2, 1 , 1, 1, null, null, 3, 4
 EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 20
 EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 1
 EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
 EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 45
-EXECUTE GrabarApuestas 10, 1 , 3, 4, 5, 1, 5,  null, 21
+EXECUTE GrabarApuestas 10, 1 , 3, 4, 5, 1,  null, 21
 EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 17
 EXECUTE GrabarApuestas 10, 2 , 1, 8, null, null, 6, 3
 EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 12
@@ -206,17 +193,13 @@ EXECUTE GrabarApuestas 5 ,2 , 2, 5, null, null, 1, 2
 EXECUTE GrabarApuestas 5 ,2 , 1, 1, 1, null, 3, 5
 EXECUTE GrabarApuestas 3 ,1 , 1, 1, null, null, 9, 5
 
-SELECT * FROM Apuestas
-SELECT * FROM Usuarios
-select * from Carreras
-select * from Pilotos
 GO
 
 DECLARE @Tiempo TIME
---SET @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
---EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
---SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
---EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
+SET @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
+EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
+SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
+EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
 SELECT @TIEMPO = TIMEFROMPARTS( 0,1,32,65,3)
 EXECUTE IntroducirDatosFinCarrera 3, 1, @Tiempo, 1
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,34,76,3)
@@ -315,19 +298,46 @@ order by [Codigo Carrera],Posicion
 
 GO
 
+	DECLARE @TotalApostado SMALLMONEY
+	DECLARE @CodigoCarrera SMALLINT
+	DECLARE @IdPiloto1 SMALLINT
+	DECLARE @IdPiloto2 SMALLINT
+	DECLARE @IdPiloto3 SMALLINT
+	DECLARE @Posicion TINYINT
+	DECLARE @Tipo SMALLINT
 
+	SET @CodigoCarrera = 1
+	SET @IdPiloto1 = 1
+	SET @IdPiloto2 = NULL
+	SET @IdPiloto3 = NULL
+	SET @Posicion = 3
+	SET @Tipo = 1
+
+SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
+
+
+GO
 EXECUTE GrabarApuestas 3 ,1 , 3, 8, 2, 3, null, 5
-go
 
+GO
 DECLARE @BIT BIT
-EXECUTE  @BIT = DeterminarGanador 52, @BIT
+EXECUTE  @BIT = DeterminarGanador 28, @BIT
+PRINT @BIT
+
+EXECUTE  @BIT = DeterminarGanador 13, @BIT
+PRINT @BIT
+
+EXECUTE  @BIT = DeterminarGanador 14, @BIT
+PRINT @BIT
+
+EXECUTE  @BIT = DeterminarGanador 22, @BIT
 PRINT @BIT
 
 GO
 
-SELECT * FROM Usuarios
-SELECT * FROM Transacciones
 
 EXECUTE FinalizarCarrera 1
+EXECUTE FinalizarCarrera 2
+EXECUTE FinalizarCarrera 3
 
 GO
