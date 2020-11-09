@@ -38,7 +38,17 @@ EXECUTE InsertarPiloto 48, 'Valteri', 'Botas', 'BOT', 'Red Bull'
 EXECUTE InsertarPiloto 9, 'Daniel', 'Kyviat', 'KVI', 'Toro Rosso'
 EXECUTE InsertarPiloto 4, 'Mark', 'Weber', 'WEB', 'Williams'
 EXECUTE InsertarPiloto 55, 'Daniel', 'Ricciardo', 'RIC', 'Williams'
-
+EXECUTE InsertarPiloto 61, 'Nombre1', 'Apellido1', 'PI1', 'Escuderia1'
+EXECUTE InsertarPiloto 62, 'Nombre2', 'Apellido2', 'PI2', 'Escuderia1'
+EXECUTE InsertarPiloto 63, 'Nombre3', 'Apellido3', 'PI3', 'Escuderia2'
+EXECUTE InsertarPiloto 64, 'Nombre4', 'Apellido4', 'PI4', 'Escuderia2'
+EXECUTE InsertarPiloto 65, 'Nombre5', 'Apellido5', 'PI5', 'Escuderia3'
+EXECUTE InsertarPiloto 66, 'Nombre6', 'Apellido6', 'PI6', 'Escuderia3'
+EXECUTE InsertarPiloto 67, 'Nombre7', 'Apellido7', 'PI7', 'Escuderia4'
+EXECUTE InsertarPiloto 68, 'Nombre8', 'Apellido8', 'PI8', 'Escuderia4'
+EXECUTE InsertarPiloto 6, 'Nombre9', 'Apellido9', 'PI9', 'Escuderia5'
+EXECUTE InsertarPiloto 6, 'Nombre10', 'Apellido10', 'P10', 'Escuderia6'
+EXECUTE InsertarPiloto 1, 'Nombre11', 'Apellido11', 'P11', 'Escuderia7'
 
 GO
 
@@ -164,180 +174,210 @@ EXECUTE ModificarSaldo 8, -23, @Tiempo, 'Pruebas en usuario 8'
 --EXECUTE ModificarSaldo 8, -100, @Tiempo, 'Pruebas en usuario 8' --> Prueba error por retirada de dinero en exceso
 
 GO
+--Prueba grbar apuesta generica
 
 EXECUTE GrabarApuestas 2, 1 , 1, 1, null, null, 3, 4
 EXECUTE GrabarApuestas 2, 3 , 1, 4, null, null, 4, 20
-EXECUTE GrabarApuestas 4, 1 , 1, 6, null, null, 8, 1
-EXECUTE GrabarApuestas 4, 2 , 1, 6, null, null, 1, 5
-EXECUTE GrabarApuestas 5, 3 , 1, 9, null, null, 6, 45
-EXECUTE GrabarApuestas 10, 1 , 3, 4, 5, 1,  null, 21
-EXECUTE GrabarApuestas 8, 3 , 3, 15, 7 , 4, null, 17
-EXECUTE GrabarApuestas 10, 2 , 1, 8, null, null, 6, 3
-EXECUTE GrabarApuestas 5, 2 , 3, 11, 14, 2, null, 12
-EXECUTE GrabarApuestas 5, 3, 1, 2, null, null, 4, 30
-EXECUTE GrabarApuestas 8, 2 , 3, 4, 3, 2, null, 23
 EXECUTE GrabarApuestas 2, 1 , 1, 7, null, null, 3, 12
 EXECUTE GrabarApuestas 8, 3, 1, 9, null, null, 1, 18
-EXECUTE GrabarApuestas 4, 2 , 3, 4, 1, 3, null, 4
-EXECUTE GrabarApuestas 2, 2 , 2, 6, null, null, 4, 2
-EXECUTE GrabarApuestas 2,1 , 2, 10, null, null, 2, 5
-EXECUTE GrabarApuestas 1,2 , 2, 4, null, null, 3, 6
-EXECUTE GrabarApuestas 3,3 , 2, 12, null, null, 4, 7
-EXECUTE GrabarApuestas 3, 3 , 2, 3, null, null, 6, 9
-EXECUTE GrabarApuestas 4 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 1 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 2 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 3 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 4 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 5 ,2 , 2, 5, null, null, 1, 2
-EXECUTE GrabarApuestas 5 ,2 , 1, 1, 1, null, 3, 5
-EXECUTE GrabarApuestas 3 ,1 , 1, 1, null, null, 9, 5
+--Prueba grabar apuesta tipo 1
+EXECUTE ApuestaTipo1 4, 1, 6, 8, 1
+EXECUTE ApuestaTipo1 4, 2, 6, 1, 5
+EXECUTE ApuestaTipo1 4, 3, 6, 6, 45
+EXECUTE ApuestaTipo1 10, 2, 8, 6, 3
+EXECUTE ApuestaTipo1 5, 3, 2, 4, 30
+--Prueba grabar apuesta tipo 2
+EXECUTE ApuestaTipo2 2, 2, 6, 2
+EXECUTE ApuestaTipo2 2, 2, 10, 5
+EXECUTE ApuestaTipo2 2, 2, 4, 6
+EXECUTE ApuestaTipo2 3, 3, 12, 7
+EXECUTE ApuestaTipo2 1, 1, 14, 8
+EXECUTE ApuestaTipo2 4, 2, 8, 20
+--Prueba grabar apuesta tipo 3
+EXECUTE ApuestaTipo3 8, 3, 15, 7, 4, 17
+EXECUTE ApuestaTipo3 10, 1, 4, 5, 1, 21
+EXECUTE ApuestaTipo3 5, 2, 11, 14, 2, 12
+EXECUTE ApuestaTipo3 8, 3, 15, 7, 4, 17
+EXECUTE ApuestaTipo3 8, 2 , 4, 3, 2, 23
+EXECUTE ApuestaTipo3 4, 2 , 4, 1, 3, 4
+
 
 GO
+--Prueba introduccion vueltas rapidas de carrera
 
 DECLARE @Tiempo TIME
 SET @TIEMPO = TIMEFROMPARTS( 0 ,1,20,341,3)
-EXECUTE IntroducirDatosFinCarrera 1, 1, @Tiempo, 3
+EXECUTE IntroducirVueltaRapidaCarrera 1, 1, @Tiempo
 SELECT @TIEMPO = TIMEFROMPARTS( 0,1,40,45,3)
-EXECUTE IntroducirDatosFinCarrera 2, 1, @Tiempo, 2
+EXECUTE IntroducirVueltaRapidaCarrera 2, 1, @Tiempo
 SELECT @TIEMPO = TIMEFROMPARTS( 0,1,32,65,3)
-EXECUTE IntroducirDatosFinCarrera 3, 1, @Tiempo, 1
+EXECUTE IntroducirVueltaRapidaCarrera 3, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,34,76,3)
-EXECUTE IntroducirDatosFinCarrera 4, 1, @Tiempo, 5
+EXECUTE IntroducirVueltaRapidaCarrera 4, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,65,3)
-EXECUTE IntroducirDatosFinCarrera 5, 1, @Tiempo, 6
+EXECUTE IntroducirVueltaRapidaCarrera 5, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,12,24,3)
-EXECUTE IntroducirDatosFinCarrera 6, 1, @Tiempo, 7
+EXECUTE IntroducirVueltaRapidaCarrera 6, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,17,37,3)
-EXECUTE IntroducirDatosFinCarrera 7, 1, @Tiempo, 9
+EXECUTE IntroducirVueltaRapidaCarrera 7, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,18,13,3)
-EXECUTE IntroducirDatosFinCarrera 8, 1, @Tiempo, 8
+EXECUTE IntroducirVueltaRapidaCarrera 8, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,40,63,3)
-EXECUTE IntroducirDatosFinCarrera 9, 1, @Tiempo, 4
+EXECUTE IntroducirVueltaRapidaCarrera 9, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,1,34,3)
-EXECUTE IntroducirDatosFinCarrera 10, 1, @Tiempo, 10
+EXECUTE IntroducirVueltaRapidaCarrera 10, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,41,45,3)
-EXECUTE IntroducirDatosFinCarrera 11, 1, @Tiempo, 13
+EXECUTE IntroducirVueltaRapidaCarrera 11, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,51,76,3)
-EXECUTE IntroducirDatosFinCarrera 12, 1, @Tiempo, 15
+EXECUTE IntroducirVueltaRapidaCarrera 12, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
-EXECUTE IntroducirDatosFinCarrera 13, 1, @Tiempo, 12
+EXECUTE IntroducirVueltaRapidaCarrera 13, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,43,56,3)
-EXECUTE IntroducirDatosFinCarrera 14, 1, @Tiempo, 14
+EXECUTE IntroducirVueltaRapidaCarrera 14, 1, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
-EXECUTE IntroducirDatosFinCarrera 15, 1, @Tiempo, 11
+EXECUTE IntroducirVueltaRapidaCarrera 15, 1, @Tiempo
 
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,24,34,3)
-EXECUTE IntroducirDatosFinCarrera 1, 2, @Tiempo, 5
+EXECUTE IntroducirVueltaRapidaCarrera 1, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,45,3)
-EXECUTE IntroducirDatosFinCarrera 2, 2, @Tiempo, 4
+EXECUTE IntroducirVueltaRapidaCarrera 2, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,65,3)
-EXECUTE IntroducirDatosFinCarrera 3, 2, @Tiempo, 15
+EXECUTE IntroducirVueltaRapidaCarrera 3, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,76,3)
-EXECUTE IntroducirDatosFinCarrera 4, 2, @Tiempo, 12
+EXECUTE IntroducirVueltaRapidaCarrera 4, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,52,65,3)
-EXECUTE IntroducirDatosFinCarrera 5, 2, @Tiempo, 1
+EXECUTE IntroducirVueltaRapidaCarrera 5, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,24,3)
-EXECUTE IntroducirDatosFinCarrera 6, 2, @Tiempo,13
+EXECUTE IntroducirVueltaRapidaCarrera 6, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,15,37,3)
-EXECUTE IntroducirDatosFinCarrera 7, 2, @Tiempo, 7
+EXECUTE IntroducirVueltaRapidaCarrera 7, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,58,13,3)
-EXECUTE IntroducirDatosFinCarrera 8, 2, @Tiempo, 2
+EXECUTE IntroducirVueltaRapidaCarrera 8, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,44,63,3)
-EXECUTE IntroducirDatosFinCarrera 9, 2, @Tiempo, 10
+EXECUTE IntroducirVueltaRapidaCarrera 9, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,34,3)
-EXECUTE IntroducirDatosFinCarrera 10, 2, @Tiempo, 11
+EXECUTE IntroducirVueltaRapidaCarrera 10, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,45,3)
-EXECUTE IntroducirDatosFinCarrera 11, 2, @Tiempo, 3
+EXECUTE IntroducirVueltaRapidaCarrera 11, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,5,76,3)
-EXECUTE IntroducirDatosFinCarrera 12, 2, @Tiempo, 9
+EXECUTE IntroducirVueltaRapidaCarrera 12, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
-EXECUTE IntroducirDatosFinCarrera 13, 2, @Tiempo, 14
+EXECUTE IntroducirVueltaRapidaCarrera 13, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
-EXECUTE IntroducirDatosFinCarrera 14, 2, @Tiempo, 8
+EXECUTE IntroducirVueltaRapidaCarrera 14, 2, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
-EXECUTE IntroducirDatosFinCarrera 15, 2, @Tiempo, 6
+EXECUTE IntroducirVueltaRapidaCarrera 15, 2, @Tiempo
 
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,24,34,3)
-EXECUTE IntroducirDatosFinCarrera 1, 3, @Tiempo, 13
+EXECUTE IntroducirVueltaRapidaCarrera 1, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,50,45,3)
-EXECUTE IntroducirDatosFinCarrera 2, 3, @Tiempo,9
+EXECUTE IntroducirVueltaRapidaCarrera 2, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,65,3)
-EXECUTE IntroducirDatosFinCarrera 3, 3, @Tiempo, 12
+EXECUTE IntroducirVueltaRapidaCarrera 3, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,76,3)
-EXECUTE IntroducirDatosFinCarrera 4, 3, @Tiempo, 3
+EXECUTE IntroducirVueltaRapidaCarrera 4, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,52,65,3)
-EXECUTE IntroducirDatosFinCarrera 5, 3, @Tiempo, 8
+EXECUTE IntroducirVueltaRapidaCarrera 5, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,32,24,3)
-EXECUTE IntroducirDatosFinCarrera 6, 3, @Tiempo,10
+EXECUTE IntroducirVueltaRapidaCarrera 6, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,15,37,3)
-EXECUTE IntroducirDatosFinCarrera 7, 3, @Tiempo, 15
+EXECUTE IntroducirVueltaRapidaCarrera 7, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,58,13,3)
-EXECUTE IntroducirDatosFinCarrera 8, 3, @Tiempo, 2
+EXECUTE IntroducirVueltaRapidaCarrera 8, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,44,63,3)
-EXECUTE IntroducirDatosFinCarrera 9, 3, @Tiempo, 11
+EXECUTE IntroducirVueltaRapidaCarrera 9, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,13,34,3)
-EXECUTE IntroducirDatosFinCarrera 10, 3, @Tiempo, 4
+EXECUTE IntroducirVueltaRapidaCarrera 10, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,4,45,3)
-EXECUTE IntroducirDatosFinCarrera 11, 3, @Tiempo, 5
+EXECUTE IntroducirVueltaRapidaCarrera 11, 3, @Tiempo
 SELECT @TIEMPO =TIMEFROMPARTS( 0,1,5,76,3)
-EXECUTE IntroducirDatosFinCarrera 12, 3, @Tiempo, 1
+EXECUTE IntroducirVueltaRapidaCarrera 12, 3, @Tiempo
 SET @TIEMPO =TIMEFROMPARTS( 0,1,33,76,3)
-EXECUTE IntroducirDatosFinCarrera 13, 3, @Tiempo, 7
+EXECUTE IntroducirVueltaRapidaCarrera 13, 3, @Tiempo
 SET @TIEMPO =TIMEFROMPARTS( 0,1,3,56,3)
-EXECUTE IntroducirDatosFinCarrera 14, 3, @Tiempo, 6
+EXECUTE IntroducirVueltaRapidaCarrera 14, 3, @Tiempo
 SET @TIEMPO =TIMEFROMPARTS( 0,1,13,33,3)
-EXECUTE IntroducirDatosFinCarrera 15, 3, @Tiempo, 14
+EXECUTE IntroducirVueltaRapidaCarrera 15, 3, @Tiempo
 
+GO
+--Prueba introduccion posiciones de carrera
 
-SELECT * FROM Pilotos
-select * from Transacciones
-select * from Apuestas
-select * from PilotosCarreras
-order by [Codigo Carrera],Posicion
+EXECUTE IntroducirPosicionCarrera 1, 1, 3
+EXECUTE IntroducirPosicionCarrera 2, 1, 2
+EXECUTE IntroducirPosicionCarrera 3, 1, 1
+EXECUTE IntroducirPosicionCarrera 4, 1, 5
+EXECUTE IntroducirPosicionCarrera 5, 1, 6
+EXECUTE IntroducirPosicionCarrera 6, 1, 7
+EXECUTE IntroducirPosicionCarrera 7, 1, 9
+EXECUTE IntroducirPosicionCarrera 8, 1, 8
+EXECUTE IntroducirPosicionCarrera 9, 1, 4
+EXECUTE IntroducirPosicionCarrera 10, 1, 10
+EXECUTE IntroducirPosicionCarrera 11, 1, 13
+EXECUTE IntroducirPosicionCarrera 12, 1, 15
+EXECUTE IntroducirPosicionCarrera 13, 1, 12
+EXECUTE IntroducirPosicionCarrera 14, 1, 14
+EXECUTE IntroducirPosicionCarrera 15, 1, 11
+
+EXECUTE IntroducirPosicionCarrera 1, 2, 5
+EXECUTE IntroducirPosicionCarrera 2, 2, 4
+EXECUTE IntroducirPosicionCarrera 3, 2, 15
+EXECUTE IntroducirPosicionCarrera 4, 2, 12
+EXECUTE IntroducirPosicionCarrera 5, 2, 1
+EXECUTE IntroducirPosicionCarrera 6, 2, 13
+EXECUTE IntroducirPosicionCarrera 7, 2, 7
+EXECUTE IntroducirPosicionCarrera 8, 2, 2
+EXECUTE IntroducirPosicionCarrera 9, 2, 10
+EXECUTE IntroducirPosicionCarrera 10, 2, 11
+EXECUTE IntroducirPosicionCarrera 11, 2, 13
+EXECUTE IntroducirPosicionCarrera 12, 2, 9
+EXECUTE IntroducirPosicionCarrera 13, 2, 14
+EXECUTE IntroducirPosicionCarrera 14, 2, 8
+EXECUTE IntroducirPosicionCarrera 15, 2, 6
+
+EXECUTE IntroducirPosicionCarrera 1, 3, 13
+EXECUTE IntroducirPosicionCarrera 2, 3, 9
+EXECUTE IntroducirPosicionCarrera 3, 3, 12
+EXECUTE IntroducirPosicionCarrera 4, 3, 3
+EXECUTE IntroducirPosicionCarrera 5, 3, 8
+EXECUTE IntroducirPosicionCarrera 6, 3, 10
+EXECUTE IntroducirPosicionCarrera 7, 3, 15
+EXECUTE IntroducirPosicionCarrera 8, 3, 2
+EXECUTE IntroducirPosicionCarrera 9, 3, 11
+EXECUTE IntroducirPosicionCarrera 10, 3, 4
+EXECUTE IntroducirPosicionCarrera 11, 3, 5
+EXECUTE IntroducirPosicionCarrera 12, 3, 1
+EXECUTE IntroducirPosicionCarrera 13, 3, 7
+EXECUTE IntroducirPosicionCarrera 14, 3, 6
+EXECUTE IntroducirPosicionCarrera 15, 3, 14
 
 GO
 
-	DECLARE @TotalApostado SMALLMONEY
-	DECLARE @CodigoCarrera SMALLINT
-	DECLARE @IdPiloto1 SMALLINT
-	DECLARE @IdPiloto2 SMALLINT
-	DECLARE @IdPiloto3 SMALLINT
-	DECLARE @Posicion TINYINT
-	DECLARE @Tipo SMALLINT
-
-	SET @CodigoCarrera = 1
-	SET @IdPiloto1 = 1
-	SET @IdPiloto2 = NULL
-	SET @IdPiloto3 = NULL
-	SET @Posicion = 3
-	SET @Tipo = 1
-
-SELECT * FROM dbo.GanaciasApuesta(@CodigoCarrera, @IdPiloto1, @IdPiloto2, @IdPiloto3, @Posicion, @Tipo)
-
+SELECT * FROM dbo.GanaciasApuesta(1, 1, null, null, 3, 1)
 
 GO
 EXECUTE GrabarApuestas 3 ,1 , 3, 8, 2, 3, null, 5
-
+select * from Apuestas
 GO
 DECLARE @BIT BIT
 EXECUTE  @BIT = DeterminarGanador 28, @BIT
 PRINT @BIT
 
-EXECUTE  @BIT = DeterminarGanador 13, @BIT
+EXECUTE  @BIT = DeterminarGanador 1, @BIT -->Ganadora
 PRINT @BIT
 
-EXECUTE  @BIT = DeterminarGanador 14, @BIT
+EXECUTE  @BIT = DeterminarGanador 2, @BIT
 PRINT @BIT
 
-EXECUTE  @BIT = DeterminarGanador 22, @BIT
+EXECUTE  @BIT = DeterminarGanador 68, @BIT -->Ganadora
 PRINT @BIT
 
 GO
 
+--Prueba finalizar carrera 
 
 EXECUTE FinalizarCarrera 1
 EXECUTE FinalizarCarrera 2
 EXECUTE FinalizarCarrera 3
 
 GO
+

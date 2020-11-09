@@ -44,7 +44,7 @@ GO
 --Entradas: Codigo de carrera, Nombre del circuito, fecha y hora en la que se realiza y numero de vueltas
 --Salida: Una nueva carrera
 
-CREATE OR ALTER PROCEDURE AnhadirCarrera
+CREATE OR ALTER PROCEDURE AnhadirCarrera 
 	@Circuito VARCHAR(20),
 	@FechaHoraInicio DATETIME,
 	@Vueltas TINYINT
@@ -89,40 +89,66 @@ END
 
 GO
 
---Nombre: introducirDatosFinCarrera
---Descripcion:Introduce la posicion y la vuelta rapida de un piloto en una carrera
---Entradas: id poiloto, codigo de la carrera, posicion del piloto y su vuelta rapida
---Salidas: modificaciones en las tablas
+--Nombre: introducirPosicionCarrera
+--Descripcion:Introduce la posicion de un piloto en una carrera
+--Entradas: id poiloto, codigo de la carrera y posicion del piloto
+--Salidas: modificaciones de la posicion en la tabla PilotosCarreras
 
-CREATE OR ALTER PROCEDURE introducirDatosFinCarrera( 
+CREATE OR ALTER PROCEDURE IntroducirPosicionCarrera( 
+	@IdPiloto SMALLINT 
+	,@CodigoCarrera SMALLINT 
+	,@Posicion TINYINT 
+	) 
+AS BEGIN 
+
+	BEGIN TRANSACTION 
+		IF (NOT EXISTS 
+			(SELECT [Fecha y Hora Fin] FROM Carreras
+				WHERE Codigo =@CodigoCarrera))
+		BEGIN
+			--Actualiza Posicion y vuelta rápida
+			UPDATE PilotosCarreras 
+			SET Posicion = @Posicion
+			WHERE	[ID Piloto]= @IdPiloto AND
+					[Codigo Carrera]=@CodigoCarrera
+		END
+	COMMIT 
+
+END 
+
+GO
+
+--Nombre: introducirVueltaRapidaCarrera
+--Descripcion:Introduce la vuelta rapida de un piloto en una carrera
+--Entradas: id poiloto, codigo de la carrera y vuelta rapida del piloto
+--Salidas: modificaciones de la vuelta rapida en la tabla PilotosCarreras
+
+CREATE OR ALTER PROCEDURE IntroducirVueltaRapidaCarrera( 
 	@IdPiloto SMALLINT 
 	,@CodigoCarrera SMALLINT 
 	,@VueltaRapida TIME 
-	,@Posicion TINYINT 
 	) 
-	 
-	AS BEGIN 
-		BEGIN TRANSACTION 
-			
-			DECLARE @Momento SMALLDATETIME = CURRENT_TIMESTAMP
-			
+AS BEGIN 
+
+	BEGIN TRANSACTION 
+		IF (NOT EXISTS 
+			(SELECT [Fecha y Hora Fin] FROM Carreras
+				WHERE Codigo =@CodigoCarrera))
+		BEGIN
 			--Actualiza Posicion y vuelta rápida
 			UPDATE PilotosCarreras 
-			SET Posicion = @Posicion,
-				[Vuelta rapida] = @VueltaRapida
+			SET [Vuelta rapida] = @VueltaRapida
 			WHERE	[ID Piloto]= @IdPiloto AND
 					[Codigo Carrera]=@CodigoCarrera
+		END
+	COMMIT 
 
-			--Actualiza la hora de fin de carrera
-			UPDATE Carreras
-			SET [Fecha y Hora Fin] = @Momento
-			WHERE @CodigoCarrera=Codigo
-
-		COMMIT 
-	END 
+END 
 
 GO
+
 --FUNCIONES ESCALARES
+GO
 
 --Nombre: AsignarCuota
 --Descripcion: Asigna una cuota de apuesta en funcion de las apuestas ya realizadas y los paramentros de entrada
@@ -149,7 +175,7 @@ BEGIN
 	--SET @CUOTA = RAND()			--Da error ya que no se puede llamar a una funcion no determinada desde una funcion creada, la solucion es crear una vista
 	SET @CUOTA = (SELECT Valor FROM F1_ValorRandom)
 
-	RETURN @Cuota*20+1
+	RETURN (@Cuota*@Cuota*20)-@Cuota+1.5
 END
 
 GO
@@ -169,6 +195,7 @@ END
 GO
 
 --RESTO DE PROCEDIMIENTOS
+GO
 
 --Nombre: ModificarSaldo
 --Descripcion: modifica el saldo de un usuario dado
@@ -210,9 +237,9 @@ CREATE OR ALTER PROCEDURE GrabarApuestas
 	@CodigoCarrera SMALLINT,
 	@TipoApuesta TINYINT,
 	@Piloto1 TINYINT,
-	@Piloto2 TINYINT = NULL,
-	@Piloto3 TINYINT = NULL,
-	@Posicion TINYINT = NULL,
+	@Piloto2 TINYINT NULL,
+	@Piloto3 TINYINT NULL,
+	@Posicion TINYINT NULL,
 	@Importe SMALLMONEY
 AS BEGIN
 	BEGIN TRANSACTION
@@ -424,9 +451,10 @@ END
 GO
 
 --Nombre: FinalizarCarrera
---Descripcion: Comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadas
+--Descripcion: Comprueba que la carrera no esté finalizada e introduce la hora de fin de carrera en caso de no estarla (que no tuviera 
+--				hora de fin de carrera),después comprueba todas las apuestas de una carrera y actualiza los saldos de las apuestas ganadoras
 --Entrada: Codigo Carrera
---Salida: Saldos actualizados
+--Salida: Saldos actualizados y hora de fin de carrera
 
 CREATE OR ALTER PROCEDURE FinalizarCarrera 
 	@CodigoCarrera SMALLINT
@@ -443,24 +471,44 @@ AS BEGIN
 			SELECT [ID Apuesta], [ID Usuario], Importe, Cuota FROM Apuestas
 			WHERE [Codigo Carrera]=@CodigoCarrera
 
-		OPEN CApuestasCarrera
+		IF (0!= 
+			(SELECT [Fecha y Hora Fin] FROM Carreras
+				WHERE Codigo = @CodigoCarrera))
+			BEGIN
+				RAISERROR ('La carrera ya ha finalizado.', -- Message text.
+				   16, -- Severity.
+				   1 -- State.
+				   )
+				DEALLOCATE CApuestasCarrera
+				ROLLBACK TRANSACTION
+			END
+		ELSE
+			BEGIN
+				--Actualiza la hora de fin de carrera
+				UPDATE Carreras
+				SET [Fecha y Hora Fin] = @Momento
+				WHERE @CodigoCarrera=Codigo
+			
+				OPEN CApuestasCarrera
 		
-		--Recorremos las apuestas
-		FETCH NEXT FROM CApuestasCarrera INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			BEGIN TRANSACTION
-				EXECUTE DeterminarGanador @IDApuesta, @BitGanador OUTPUT
-				IF @BitGanador = 1
-					BEGIN
-						SET @Importe = dbo.CalcularPremio (@Importe, @Cuota) --¿¿¿Dara problemas???
-						EXECUTE ModificarSaldo @IDUsuario, @Importe, @Momento, 'Ingreso por acierto de apuesta'
-					END
+				--Recorremos las apuestas
 				FETCH NEXT FROM CApuestasCarrera INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
-			COMMIT
-		END
-	CLOSE CApuestasCarrera
-	DEALLOCATE CApuestasCarrera
-	COMMIT
+				WHILE @@FETCH_STATUS = 0
+					BEGIN
+						BEGIN TRANSACTION
+							EXECUTE DeterminarGanador @IDApuesta, @BitGanador OUTPUT
+							IF @BitGanador = 1
+								BEGIN
+									SET @Importe = dbo.CalcularPremio (@Importe, @Cuota) --¿¿¿Dara problemas???-->No, actualiza bien la variable
+									EXECUTE ModificarSaldo @IDUsuario, @Importe, @Momento, 'Ingreso por acierto de apuesta'
+								END
+							FETCH NEXT FROM CApuestasCarrera INTO @IDApuesta, @IDUsuario, @Importe, @Cuota
+						COMMIT
+					END
+				CLOSE CApuestasCarrera
+				DEALLOCATE CApuestasCarrera
+				COMMIT--> Si está al final tambien se ejecuta tras ejecutar el ROLLBACK del ELSE y el COMMIT no pertenecia a ningun BEGIN TRANSACTION
+			END
 END
 GO
+			
